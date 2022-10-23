@@ -370,7 +370,7 @@ foreach ($permisos as $permisoMd5)
           ?>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-advanced" aria-expanded="false" aria-controls="ui-advanced">
-              <i class="far fa-user menu-icon"></i>
+              <i class="fas fa-file menu-icon"></i>
               <span class="menu-title">Datos Técnicos</span>
               <i class="menu-arrow"></i>
             </a>
@@ -380,16 +380,17 @@ foreach ($permisos as $permisoMd5)
               </ul>
             </div>
           </li>
+
           <?php
           if (!empty($usuarios)) {
           ?>
           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#ui-advanced" aria-expanded="false" aria-controls="ui-advanced">
+            <a class="nav-link" data-toggle="collapse" href="#maps" aria-expanded="false" aria-controls="maps">
               <i class="far fa-user menu-icon"></i>
               <span class="menu-title">Usuarios</span>
               <i class="menu-arrow"></i>
             </a>
-            <div class="collapse" id="ui-advanced">
+            <div class="collapse" id="maps">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url();?>utente">Lista</a></li>
               </ul>
@@ -398,27 +399,5 @@ foreach ($permisos as $permisoMd5)
           <?php
            } 
           ?>
-          <!--
-          <li class="nav-item">
-            <a class="nav-link" href="<?php echo base_url();?>formulario" target="_blank">
-              <i class="fas fa-minus-square menu-icon"></i>
-              <span class="menu-title">Formulario</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <?php
-              if ($this->session->userdata('tipo')==1) {
-              $manual = str_replace('.pdf', '', 'solicitante.pdf');
-              }else{
-              $manual = str_replace('.pdf', '', 'funcionario.pdf');
-            }
-            ?>
-            <a class="nav-link" href="<?php echo base_url().'proceso/manual/'.$manual; ?>">
-              <i class="far fa-file-alt menu-icon"></i>
-              <span class="menu-title">Manual de Usuario</span>
-            </a>
-          </li>
-          -->
-
         </ul>
       </nav>

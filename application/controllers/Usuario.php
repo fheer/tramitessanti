@@ -195,8 +195,6 @@ class Usuario extends CI_Controller{
                 $params = $this->datosUpdate();
                 $idusuario = $this->Usuario_model->updateUsuario($idusuario,$params);
                 $data['usuario'] = $this->Usuario_model->getUsuarioById($idusuario);
-                //$idpersona = $data['usuario']['idpersona'];
-                //$data['persona'] = $this->Persona_model->getPersonaId($idpersona);
                 $data['mensaje'] = 'Salga de la aplicación e ingrese con su nueva contraseña'; 
 
                 $data['modificado'] = 1;
@@ -250,10 +248,9 @@ class Usuario extends CI_Controller{
         }
 
         $params = array(
-            'idusuario' => $this->input->post('idusuario'),
             'permisos' => $permisos,
             'foto' => $this->subirImagen(),
-            'slug' => $this->generateSlug($this->input->post('usuario')),
+            'key' => $this->generateSlug($this->input->post('usuario')),
         );
         return $params;
     }
@@ -275,10 +272,9 @@ class Usuario extends CI_Controller{
         $clave = $this->generarPassword($this->input->post('clave'));
         $usuario = $this->input->post('usuario');
         $params = array(
-            'idusuario' => $this->input->post('idusuario'),
             'clave' => $clave,
             'foto' => $this->subirImagen(),
-            'slug' => $this->generateSlug($this->input->post('usuario')),
+            'key' => $this->generateSlug($this->input->post('usuario')),
         );
         return $params;
     }
