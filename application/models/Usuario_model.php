@@ -236,7 +236,7 @@ class Usuario_model extends CI_Model
         if (password_verify($psw, $clave))
         {
             $s_user = array(
-                'idPersona' => $ru->idpersona,
+                'idpersona' => $ru->idpersona,
                 'ci' => $ru->ci,
                 'nomUser' => $ru->nombres,
                 'apUser' => $ru->apellidos,
