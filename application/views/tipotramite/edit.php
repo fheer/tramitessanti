@@ -40,6 +40,7 @@
           <label for="nombre" class="col-sm-2 col-form-label">Trámite</label>
           <div class="col-sm-4">
             <input type="hidden" class="form-control" name="idtipotramite" value="<?php echo $tipotramite['idtipotramite']; ?>">
+            <input type="text" class="form-control" name="slug" value="<?php echo $tipotramite['key']; ?>">
             <input type="text" class="form-control" name="nombre" value="<?php echo $tipotramite['nombre']; ?>">
             <span class="text-danger"><?php echo form_error('nombre');?></span>
           </div>

@@ -47,6 +47,9 @@
   <!-- Custom js for wizard-->
   <script src="<?php echo base_url();?>assets/js/wizard.js"></script>
   <script src="<?php echo base_url();?>assets/js/profile-demo.js"></script>
-  
+  <script src="<?php echo base_url();?>assets/js/jquery-editable-select.js"></script>
+  <script type="text/javascript">
+    $('#solicitante').editableSelect({ effects: 'slide' });
+  </script>
 </body>
 </html>

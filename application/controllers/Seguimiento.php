@@ -250,7 +250,6 @@ class Seguimiento extends CI_Controller{
             if (!empty($data['persona'])) {
                 $data['personatramite'] = $this->ProcesoTramite_model->procesoOnlyTramiteById($data['persona']['idpersona']);
                 if (!empty($data['personatramite'])) {
-                    $data['tramite'] = $this->ProcesoTramite_model->getProcesoTramiteId($data['personatramite']['idtramite']);
                     $this->load->view('layout/header');
                     $this->load->view('seguimiento/buscar',$data);
                     $this->load->view('layout/footer');

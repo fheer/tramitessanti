@@ -45,14 +45,14 @@
                 <tbody>
                   <?php $i = 1;
                   $ciInstance = &get_instance();
-                  $ciInstance->load->model("NormaLegal_model");                       
+                  $ciInstance->load->model("NormaLegal_model");
                   foreach ($tipotramite  as $row) 
                   {
-                    $normaLegal = $ciInstance->NormaLegal_model->getNormaLegal($row['idnormalegal']);
+                    $normaLegal = $ciInstance->NormaLegal_model->getNormaLegal($row['idnormaLegal']);
                   ?>
                     <tr>
                       <td align="center"><?php echo $i; ?></td>
-                      <td><?php echo $row['nombre'];?></td>
+                      <td><?php echo $row['nombreRequisito'];?></td>
                       <td><?php echo $row['descripcion'];?></td>
                       <td><?php echo $row['tiempoEstimado'];?></td>
                       <td><?php echo $normaLegal['normalegal']; ?></td>
@@ -82,7 +82,7 @@
                             <?php 
                             if ($row['estado']==1) {
                               ?>
-                               <a href="<?php echo base_url().'tipotramite/editar/'.$row['slug']; ?>"
+                               <a href="<?php echo base_url().'tipotramite/editar/'.$row['key']; ?>"
                               title="Modificar informacion" onClick="">
                               &nbsp <i style="color:#555;" class="fa fa-edit"></i> Modificar
                             </a>                       

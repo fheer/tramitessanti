@@ -57,7 +57,6 @@
                     }else{
                       $cargo = $ciInstance->Actividad_model->sacaActividad($funcionario['idactividad']);
                     }
-                    
                     ///*
                       $solicitante = $ciInstance->Persona_model->getPersonaId($idsolicitante);
                     //*/

@@ -52,11 +52,17 @@
                       };
                 </script>
                 <label for="idexpedido" class="col-sm-1 col-form-label">Expedido</label>
-                <div class="col-sm-1">
+                <div class="col-sm-2">
                   <select class="js-example-basic-single w-100 form-control-sm" name="idexpedido">
-                    <?php foreach ($expedido as $row) { ?>
-                    <option value="<?php echo $row['idexpedido']; ?>"><?php echo $row['expedido']; ?></option>
-                    <?php } ?> 
+                    <option value="BN.">BN.</option>
+                    <option value="CB.">CB.</option>
+                    <option value="CH.">CH.</option>
+                    <option value="LP.">LP.</option>
+                    <option value="OR.">OR.</option>
+                    <option value="PA.">PA.</option>
+                    <option value="PT.">PT.</option>
+                    <option value="TJ.">TJ.</option>
+                    <option value="SC.">SC.</option>
                   </select>
                   <span class="text-danger"><?php echo form_error('idexpedido');?></span>
                 </div>

@@ -35,10 +35,15 @@ $tipotramite = $ci->TipoTramite_model->getTodosLosTramites();
               <select class="js-example-basic-single w-100" id="tipotramite" name="tipotramite">
                 <option value="Seleccione">Seleccione trámite</option>
                 <?php foreach ($tipotramite as $row) { ?>
-                  <option value="<?php echo $row['nombre']; ?>"><?php echo $row['nombre']; ?></option>
+                  <option value="<?php echo $row['idtipotramite']; ?>"><?php echo $row['nombreRequisito']; ?></option>
                 <?php } ?>
               </select>
               <span class="text-danger"><?php echo form_error('tipotramite');?></span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="requisitos" class="col-sm-3 col-form-label">Requisitos Indispensables (Para el Trámite)</label>
+            <div class="col-sm-5" id="requisitos">
             </div>
           </div>
           <div class="form-group row">
@@ -107,6 +112,29 @@ $tipotramite = $ci->TipoTramite_model->getTodosLosTramites();
     </form>
   </div>
 </div>
-
 </div>
 <!-- content-wrapper ends -->
+<script type="text/javascript">
+  var baseurl = "<?php echo base_url(); ?>";
+  var fecha = new Date();
+  document.getElementById('tipotramite').onchange = function() {
+    /* Referencia al option seleccionado */
+    var html = '';
+    document.getElementById('requisitos').innerHTML = html;
+    var mOption = this.options[this.selectedIndex];
+    var mData = mOption.dataset;
+      $.ajax({
+        url: baseurl+"proceso/cargarrequisitos/" + this.value,
+        method:"POST",
+        success: function(data) {
+          const parsedMessage = JSON.parse(data);
+          for (var i = 0; i < parsedMessage.length; i++) {
+
+            html += '<label class="form-check-label"><strong>'+ (i+1) + ' ' +parsedMessage[i].nombreRequisito +'</strong></label>';
+            html += '<br><br>';
+          }
+          document.getElementById('requisitos').innerHTML = html;
+        }
+      });
+    };
+</script>

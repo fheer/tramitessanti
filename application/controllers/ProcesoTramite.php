@@ -99,6 +99,22 @@ class ProcesoTramite extends CI_Controller{
     }
 
     /**
+     * Insert inicia la vista header add y footer para procesoTramite.
+     */
+    function nuevo($idtipotramite,$idpersona)
+    {
+        $data['persona'] = $this->Persona_model->getPersonaId($idpersona);
+        $data['tipotramite'] = $this->TipoTramite_model->getTipoTramiteId($idtipotramite);
+        $data['funcionario'] = $this->Funcionario_model->getAllFuncionario();
+
+        //*
+        $this->load->view('layout/header');
+        $this->load->view('procesoTramite/add',$data);
+        $this->load->view('layout/footer');
+        //*/
+    }
+
+    /**
      * GetTramiteRequisitos.
      * @return result_array con datos de requisitos de los tipotramites.
      */
@@ -173,13 +189,15 @@ class ProcesoTramite extends CI_Controller{
     {   
         $idpersona = $this->input->post('idpersona');
         $idtipotramite = $this->input->post('idtipotramite');
+
         $idfuncionario = $this->session->userdata('idusuario');
         $idfuncionarioNew = $this->input->post('idfuncionario');
-
+        //echo 'hola';
         $direccion = $this->input->post('direccion');
         $latitud = $this->input->post('latitud');
         $longitud = $this->input->post('longitud');
         $datosFuncionario = $this->Persona_model->getDatosfuncionarioUsuario($idfuncionario);
+        //print_r($datosFuncionario);
         $idusuario = $datosFuncionario['idpersona'];
 
         ///*

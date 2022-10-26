@@ -33,14 +33,14 @@
                     <div class="col-sm-5">
                       <select class="js-example-basic-single w-100" id="idtipotramite" name="idtipotramite">
                         <option value="0">Seleccione tramite</option>
-                        <?php foreach ($tipotramite as $row) { ?>
-                          <option value="<?php echo $row['idtipotramite']; ?>"><?php echo $row['nombreRequisito']; ?></option>
-                        <?php } ?>
+                        <?php //foreach ($tipotramite as $row) { ?>
+                          <option value="<?php echo $tipotramite['idtipotramite']; ?>"><?php echo $tipotramite['nombreRequisito']; ?></option>
+                        <?php //} ?>
                       </select>
                       <span class="text-danger"><?php echo form_error('idtipotramite');?></span>
                     </div>
                   </div>
-                    <div class="form-group row">
+                  <div class="form-group row">
                     <label for="fechaInicio" class="col-sm-3 col-form-label">Fecha de Inicio</label>
 
                     <div class="col-sm-2 input-group date datepicker">
@@ -49,18 +49,18 @@
                     </div>
                     <label for="fechaFin" class="col-sm-3 col-form-label">Fecha Tentativa de Conclusión</label>
 
-                    <div class="col-sm-3 input-group date datepicker">
-                      <input type="text" name="fechaFin" id="fechaFin">
+                    <div class="col-sm-2 input-group date datepicker">
+                      <input type="text" name="fechaFin" id="fechaFin" readonly>
                       <span class="text-danger"><?php echo form_error('fechaFin');?></span>
                     </div>
                   </div>
                   <div class="form-group row">
                     <label for="idpersona" class="col-sm-3 col-form-label">Solicitante</label>
                     <div class="col-sm-4">
-                      <select class="js-example-basic-single w-100" name="idpersona">
-                        <?php foreach ($persona as $row) { ?>
-                          <option value="<?php echo $row['idpersona']; ?>"><?php echo $row['nombreCompleto']; ?></option>
-                        <?php } ?> 
+                      <select class="js-example-basic-single w-100" name="idpersona" id="idpersona">
+                        <?php //foreach ($persona as $row) { ?>
+                          <option value="<?php echo $persona['idpersona']; ?>"><?php echo $persona['nombreCompleto']; ?></option>
+                        <?php //} ?>
                       </select>
                       <span class="text-danger"><?php echo form_error('idpersona');?></span>
                     </div>
@@ -186,9 +186,3 @@
       }
     };
 </script>
-
-
-
-
-
-

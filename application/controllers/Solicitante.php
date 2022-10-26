@@ -121,6 +121,15 @@ class Solicitante extends CI_Controller{
     }
 
     /**
+     *
+     */
+    public function buscarApellido($ci)
+    {
+
+        echo $this->Persona_model->validarCi($ci);
+    }
+
+    /**
      * EditarDB envia los datos a Persona_model para modificar datos.
      */
     function editarDB()
@@ -196,7 +205,7 @@ class Solicitante extends CI_Controller{
             'key' => $this->generateSlug($this->input->post('ci')),
             'usuario' => $this->generarNombreUsuario($nombres, $apellidoPaterno, $apellidoMaterno, $ci),
             'clave' => $this->generarPassword($ci),
-            'permisos' => MD5(4).'#',
+            'permisos' => MD5(4).'#'.MD5(6).'#',
         );
         return $params;
     }
