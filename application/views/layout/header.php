@@ -34,6 +34,7 @@ $PersonasMd5 = md5("2");
 $TramitesMd5 = md5("3");
 $SeguimientoMd5 = md5("4");
 $UsuariosMd5 = md5("5");
+$FormMD = md5("6");
 foreach ($permisos as $permisoMd5)
   {
     switch ($permisoMd5)
@@ -53,6 +54,10 @@ foreach ($permisos as $permisoMd5)
       case $UsuariosMd5:
         $usuarios = "Usuarios";
         break;
+      case $FormMD:
+        $form = "form";
+        break;
+
     }
   }
 }
@@ -74,6 +79,7 @@ foreach ($permisos as $permisoMd5)
   <link rel="stylesheet" href="<?php echo base_url();?>assets/vendors/css/vendor.bundle.addons.css">
   <link rel="stylesheet" href="<?php echo base_url();?>assets/vendors/iconfonts/ti-icons/css/themify-icons.css">
   <link rel="stylesheet" href="<?php echo base_url();?>assets/vendors/iconfonts/simple-line-icon/css/simple-line-icons.css">
+  <link rel="stylesheet" href="<?php echo base_url();?>assets/css/jquery-editable-select.css">
   <!-- endinject -->
   <!-- plugin css for this page -->
   <!-- End plugin css for this page -->
@@ -273,7 +279,7 @@ foreach ($permisos as $permisoMd5)
                   <?php echo $this->session->userdata('apUser'); ?>
                 </p>
                 <p class="designation">
-                  <?php echo $this->session->userdata('idpersona');?>
+                  <?php echo $this->session->userdata('idusuario');?>
                   ---------------------------
                 </p>
               </div>
@@ -341,7 +347,7 @@ foreach ($permisos as $permisoMd5)
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> 
                 <a class="nav-link" href="<?php echo  base_url();?>proceso/lista">Lista Tramite</a></li>
-                <li class="nav-item"> <a class="nav-link" href="<?php echo  base_url();?>proceso/nuevo">Nuevo Tramite</a></li>
+                <li class="nav-item"> <a class="nav-link" href="<?php echo  base_url();?>formulario/lista">Solicitud de Trámites</a></li>
               </ul>
             </div>
           </li>
@@ -368,6 +374,7 @@ foreach ($permisos as $permisoMd5)
           <?php
            } 
           ?>
+          <!--
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-advanced" aria-expanded="false" aria-controls="ui-advanced">
               <i class="fas fa-file menu-icon"></i>
@@ -380,7 +387,7 @@ foreach ($permisos as $permisoMd5)
               </ul>
             </div>
           </li>
-
+          -->
           <?php
           if (!empty($usuarios)) {
           ?>
@@ -398,6 +405,18 @@ foreach ($permisos as $permisoMd5)
           </li>
           <?php
            } 
+          ?>
+          <?php
+          if (!empty($form)) {
+          ?>
+          <li class="nav-item">
+            <a class="nav-link" href="<?php echo base_url();?>formulario" target="_blank">
+              <i class="fas fa-minus-square menu-icon"></i>
+              <span class="menu-title">Formulario</span>
+            </a>
+          </li>
+          <?php
+           }
           ?>
         </ul>
       </nav>

@@ -1,71 +1,71 @@
 <script type="text/javascript">
   function confirm_modal(id,activo)
   {
-      var url = '<?php echo base_url() . "solicitante/cambiarEstado/" ;?>';
+      var url = '<?php echo base_url() . "proceso/cambiar/" ;?>';
       $("#url-delete").attr('href', url+id+'/'+activo);
       jQuery('#modal-4').modal('show', {backdrop: 'static'});
 
   }
-</script> 
+</script>
 <!-- partial -->
 <div class="main-panel">
   <div class="content-wrapper">
     <div class="page-header">
       <div class="pull-right">
-        <a href="<?php echo base_url();?>imprimir/usuarios" target="_blank" class="btn btn-info">
+        <a href="<?php echo  base_url();?>formulario" class="btn btn-outline-info"><span class="fa fa-plus-circle" aria-hidden="true"></span> Nueva Solicitud de Trámite</a>
+        <a href="<?php echo base_url();?>imprimir/procesotramite" target="_blank" class="btn btn-info">
           <span class="fa fa-print" aria-hidden="true"></span> Imprimir Lista</a>
       </div>
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>main">Inicio</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Lista Usuarios</li>
+          <li class="breadcrumb-item active" aria-current="page">Solicitud de Trámite</li>
         </ol>
       </nav>
     </div>
     <div class="row grid-margin">
 
       <div class="col-12">
-        <div class="row">      
+        <div class="row">
           <div class="col-12">
             <div class="table-responsive">
               <table id="order-listing" class="table">
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>Nombre(s) y Apellido(s)</th>
-                    <th>Nombre de usuario</th>
-                    <th>Foto</th>
+                    <th>Solicitante</th>
+                    <th>Trámite</th>
+                    <th>Fecha Solicitud</th>
                     <th>Estado</th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
-                  <?php $i = 1; foreach ($usuario  as $row) { 
-                    $ci = &get_instance();
-                    $ci->load->model("Persona_model");
-                    $datospersona= $ci->Persona_model->getPersonaId($row['idpersona']);
+                  <?php
+                  $i = 1;
+                  foreach ($solicitud  as $row)
+                  {
+                    $ciInstance = &get_instance();
+                    $ciInstance->load->model("Persona_model");
+                    $ciInstance->load->model("TipoTramite_model");
+
+                    $solicitante = $ciInstance->Persona_model->getPersonaId($row['idpersona']);
+                    $tipotramite = $this->TipoTramite_model->getTipoTramiteId($row['idtipotramite']);
+                    $newDate = date("d-m-Y", strtotime($row['fecha']));
                   ?>
                     <tr>
                       <td align="center"><?php echo $i; ?></td>
-                      <td><?php echo $datospersona['nombreCompleto']; ?>
-                      </td>
-                      <td><?php echo $row['usuario']; ?></td>
+                      <td><?php echo $solicitante['nombreCompleto'];?></td>
+                      <td><?php echo $tipotramite['nombreRequisito'];?></td>
+                      <td><?php echo $newDate; ?></td>
                       <td>
-                        <img src="<?php echo base_url().'fotos/usuarios/'.$row['foto']; ?>">
-                      </td>
-                      <td>
-                        <?php 
+                        <?php
                         if ($row['estado']==1) {
                           ?>
-                          <span class='badge badge-success badge-pill'>Activo</span>
-                          <?php
-                        }else{
-                          ?>
-                          <span class="badge badge-warning badge-pill">Inactivo</span>
-                          <?php 
+                          <span class='badge badge-success badge-pill'>En curso</span>
+                        <?php
                         }
                         ?>
-
                       </td>
                       <td>
                         <span class="pull-right">
@@ -76,38 +76,21 @@
                             <span class="caret"></span>
                           </button>
                           <ul class="dropdown-menu pull-right" aria-labelledby="dropdownMenu1">
-                           <li>
-                            <?php 
-                            if ($row['estado']==1) {
-                              ?>
-                               <a href="<?php echo base_url().'usuario/aggiornare/'.$row['key']; ?>"
-                              title="Modificar informacion" onClick="">
-                              &nbsp <i style="color:#555;" class="fa fa-edit"></i> Modificar
-                            </a>                       
-                              <?php } ?>
-                          </li>
                           <li>
-                            <?php 
+                            <?php
                             if ($row['estado']==1) {
-                              ?>
-                               <a href="#"
-                               title="Estado Usuario" onClick="return confirm_modal(<?php echo $row['idpersona']; ?>,0)">
-                                &nbsp <i style="color:red;" class="fa fa-exclamation-triangle"></i> Inactivo
-                              </a>
-                              <?php
-                            }else{
-                              ?>
-                              <a href="#"
-                               title="Estado Usuario" onClick="return confirm_modal(<?php echo $row['idpersona']; ?>,1)">
-                                &nbsp <i style="color:green;" class="fa fa-exclamation-triangle"></i> Activo
-                              </a>
-                            <?php } ?>
+                            ?>
+                               <a href="<?php echo base_url().'proceso/nuevo-tramite/'.$row['idtipotramite']; ?>/<?php echo $row['idpersona']?>"
+                              title="Modificar informacion" onClick="">
+                              &nbsp <i style="color:555;" class="fa fa-plus-circle"></i> Iniciar Trámite
+                            </a>
+                              <?php } ?>
                           </li>
                         </ul>
                       </div>
                     </span>
-                  </td>                           
-                </tr>                       
+                  </td>
+                </tr>
                 <?php $i++; } ?>
               </tbody>
             </table>

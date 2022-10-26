@@ -70,7 +70,7 @@
                             <?php 
                             if ($row['estado']==1) {
                               ?>
-                               <a href="<?php echo base_url().'norma/modificar/'.$row['slug']; ?>"
+                               <a href="<?php echo base_url().'norma/modificar/'.$row['key']; ?>"
                               title="Modificar informacion" onClick="">
                               &nbsp <i style="color:#555;" class="fa fa-edit"></i> Modificar
                             </a>                       
@@ -81,14 +81,14 @@
                             if ($row['estado']==1) {
                               ?>
                                <a href="#"
-                               title="Estado Norma Legal" onClick="return confirm_modal(<?php echo $row['idnormalegal']; ?>,0)">
+                               title="Estado Norma Legal" onClick="return confirm_modal(<?php echo $row['idnormaLegal']; ?>,0)">
                                 &nbsp <i style="color:red;" class="fa fa-exclamation-triangle"></i> Inactivo
                               </a>
                               <?php
                             }else{
                               ?>
                               <a href="#"
-                               title="Estado Norma Legal" onClick="return confirm_modal(<?php echo $row['idnormalegal']; ?>,1)">
+                               title="Estado Norma Legal" onClick="return confirm_modal(<?php echo $row['idnormaLegal']; ?>,1)">
                                 &nbsp <i style="color:green;" class="fa fa-exclamation-triangle"></i> Activo
                               </a>
                             <?php } ?>

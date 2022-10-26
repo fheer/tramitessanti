@@ -69,7 +69,7 @@
                             <?php 
                             if ($row['estado']==1) {
                               ?>
-                               <a href="<?php echo base_url().'requisito/modificar/'.$row['slug']; ?>/1"
+                               <a href="<?php echo base_url().'requisito/modificar/'.$row['key']; ?>/1"
                               title="Modificar informacion" onClick="">
                               &nbsp <i style="color:#555;" class="fa fa-edit"></i> Modificar
                             </a>                       

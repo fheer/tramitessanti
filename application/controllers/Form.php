@@ -11,8 +11,10 @@ class Form extends CI_Controller{
         parent::__construct();
         $this->load->model('Persona_model');
         $this->load->model('Actividad_model');
-        $this->load->model('Expedido_model');
+        $this->load->model('TipoTramite_model');
         $this->load->model('DatosTecnicos_model');
+        $this->load->model('Requisito_model');
+
 
         require_once  APPPATH.'controllers/PDF_MC_Table.php';
     }
@@ -24,10 +26,23 @@ class Form extends CI_Controller{
     {
         $data['opcion'] = 1;
         $data['actividad'] = $this->Actividad_model->getAllActividad();
-        $data['expedido'] = $this->Expedido_model->getAllExpedido();
 
         $this->load->view('layout/header');
         $this->load->view('form/form',$data);
+        $this->load->view('layout/footer');
+
+    }
+
+    /**
+     * Insert inicia la vista header add y footer para persona.
+     */
+    function listaSolicitud()
+    {
+        //$data['opcion'] = 1;
+        $data['solicitud'] = $this->DatosTecnicos_model->geListaDatosTecnicos();
+
+        $this->load->view('layout/header');
+        $this->load->view('form/lista',$data);
         $this->load->view('layout/footer');
 
     }
@@ -60,7 +75,7 @@ class Form extends CI_Controller{
                 $this->load->view('layout/footer');
             }else{
                 $data['actividad'] = $this->Actividad_model->getAllActividad();
-                $data['expedido'] = $this->Expedido_model->getAllExpedido();
+
                 $this->load->view('layout/header');
                 $this->load->view('form/form',$data);
                 $this->load->view('layout/footer');
@@ -129,6 +144,7 @@ class Form extends CI_Controller{
     function datoTecnicos()
     {
         $data['idpersona'] = $this->input->post('idpersonadatos');
+        //$data['tipotramite'] = $this->TipoTramite_model->getTodosLosTramites();
         $this->load->view('layout/header');
         $this->load->view('form/datostecnicos',$data);
         $this->load->view('layout/footer');
@@ -140,6 +156,10 @@ class Form extends CI_Controller{
      */
     function datos()
     {
+        $ci = $this->input->post('ci');
+        $nombres = $this->input->post('nombres');
+        $apellidoPaterno = $this->input->post('apellidoPaterno');
+        $apellidoMaterno = $this->input->post('apellidoMaterno');
         $params = array(
             'ci' => $this->input->post('ci'),
             'nombres' => $this->input->post('nombres'),
@@ -154,7 +174,10 @@ class Form extends CI_Controller{
             'celular' => $this->input->post('celular'),
             'idcargo' => 5,
             'idactividad' => $this->input->post('idactividad'),
-            'slug' => $this->generateSlug($this->input->post('ci')),
+            'key' => $this->generateSlug($this->input->post('ci')),
+            'usuario' => $this->generarNombreUsuario($nombres, $apellidoPaterno, $apellidoMaterno, $ci),
+            'clave' => $this->generarPassword($ci),
+            'permisos' => MD5(4).'#'.MD5(6).'#',
         );
         return $params;
     }
@@ -166,7 +189,7 @@ class Form extends CI_Controller{
     {
         $params = array(
             'idpersona' => $this->input->post('idpersona'),
-            'tipotramite' => $this->input->post('tipotramite'),
+            'idtipotramite' => $this->input->post('tipotramite'),
             'fecha' => date('Y-m-d'),
             'zona' => $this->input->post('zona'),
             'direccion' => $this->input->post('direccion'),
@@ -207,7 +230,7 @@ class Form extends CI_Controller{
     {
        $this->load->library('form_validation');
        $this->form_validation->set_rules('tipotramite','Tipo Trámite','required');
-       $this->form_validation->set_rules('zona','Zona','required|min_length[5]|max_length[50]|callback_alpha_acento');
+       $this->form_validation->set_rules('zona','Zona','required|min_length[5]|max_length[50]');
        $this->form_validation->set_rules('direccion','Dirección','required|max_length[200]|callback_address');
        $this->form_validation->set_rules('manzano','Manzano','required');
        $this->form_validation->set_rules('predio','Predio(Lote)','required');
@@ -224,9 +247,8 @@ class Form extends CI_Controller{
     {
         $data = $this->Persona_model->getPersonaId($idpersona);
         $dataDatos = $this->DatosTecnicos_model->getDatosTecnicosReporte($iddatotecnico, $idpersona);
-        $expedido = $this->Expedido_model->getExpedido($data['idexpedido']);
-        //print_r($dataDatos);
-
+        $tipotramite = $this->TipoTramite_model->getTipoTramiteId($dataDatos['idtipotramite']);
+        $requisito = $this->Requisito_model->getRequisitoId($dataDatos['idtipotramite']);
         $pdf = new PDF_MC_Table();
         $pdf->AddPage();
         $pdf->AliasNbPages();
@@ -243,18 +265,20 @@ class Form extends CI_Controller{
         $nombreSolicitante = strtoupper(utf8_decode($data['nombreCompleto']));
 
         $datosConstancia = 'Yo '. $nombreSolicitante .' con C.I. expedido en '. 
-        utf8_decode($expedido['expedido']).',';
+        utf8_decode($data['idexpedido']).',';
 
-        $constancia = 'en condición de propietario o representante legal, de acuerdo al Art. 1322 del Código Civil, declaro expresamente que los datos proporcionados mediante el presente formulário son verídicos y fidedignos; para lo que manifiesto pleno conocimiento, entera conformidad y absoluta aceptación para que el Gobierno Autónomo Municipal de Tiquipaya, en uso de sus especificas funciones y atribuciones establecidas por ley, proceda a las inspecciones, reinspecciones y verificaciones, vigilancia alimentaria, análisis de laboratorio, controles de contaminación y fiscalización de los mismos in situ, autorizado y otorgado a dicho efecto las máximas seguridades de ingreso y permanencia al personal técnico designado a practicar las acciones anteriormente señaladas.';
-        $originalDate = "2021-07-18";
+        //$constancia = 'en condición de propietario o representante legal, de acuerdo al Art. 1322 del Código Civil, declaro expresamente que los datos proporcionados mediante el presente formulário son verídicos y fidedignos; para lo que manifiesto pleno conocimiento, entera conformidad y absoluta aceptación para que el Gobierno Autónomo Municipal de Tiquipaya, en uso de sus especificas funciones y atribuciones establecidas por ley, proceda a las inspecciones, reinspecciones y verificaciones, vigilancia alimentaria, análisis de laboratorio, controles de contaminación y fiscalización de los mismos in situ, autorizado y otorgado a dicho efecto las máximas seguridades de ingreso y permanencia al personal técnico designado a practicar las acciones anteriormente señaladas.';
+        //
+        $constancia = 'en condición de propietario o representante legal, de acuerdo al Art. 1322 del Código Civil, declaro expresamente que los datos proporcionados mediante el presente formulário son verídicos y fidedignos; para lo que manifiesto pleno conocimiento, entera conformidad y absoluta aceptación para que el Gobierno Autónomo Municipal, en uso de sus especificas funciones y atribuciones establecidas por ley, proceda a las inspecciones, reinspecciones y verificaciones, vigilancia alimentaria, análisis de laboratorio, controles de contaminación y fiscalización de los mismos in situ, autorizado y otorgado a dicho efecto las máximas seguridades de ingreso y permanencia al personal técnico designado a practicar las acciones anteriormente señaladas.';
+        //$originalDate = "2021-07-18";
         $newDate = date("d-m-Y", strtotime($dataDatos['fecha']));
         $pdf->SetFont('Arial','B',11);
-        $pdf->Cell(30);
-        $pdf->Cell(100,10,utf8_decode('FORMULARIO DE SOLICITUD'),0,0,'C');
+        //$pdf->Cell(30);
+        $pdf->Cell(180,10,utf8_decode('FORMULARIO DE SOLICITUD DE TRÁMITE'),0,0,'C');
         $pdf->Ln(15);
         $pdf->Cell(130,10,utf8_decode('FECHA: ').utf8_decode($newDate),0,0,'L');
         $pdf->Ln(5);
-        $pdf->Cell(130,10,utf8_decode('C.I.: ').utf8_decode($data['ci'].' '.$expedido['expedido']),0,0,'L');
+        $pdf->Cell(130,10,utf8_decode('C.I.: ').utf8_decode($data['ci'].' '.$data['idexpedido']),0,0,'L');
         $pdf->Ln(5);
         $pdf->Cell(130,10,utf8_decode('SOLICITANTE: ').utf8_decode($data['nombreCompleto']),0,0,'L');
         $pdf->Ln(5);
@@ -266,7 +290,17 @@ class Form extends CI_Controller{
         $pdf->Ln(20);
         $pdf->Cell(180,10,utf8_decode('DATOS TÉCNICOS'),0,0,'C');
         $pdf->Ln(15);
-        $pdf->Cell(130,10,utf8_decode('TIPO DE TRÁMITE: ').utf8_decode($dataDatos['tipotramite']),0,0,'L');
+        $pdf->Cell(130,10,utf8_decode('TIPO DE TRÁMITE: ').utf8_decode($tipotramite['nombreRequisito']),0,0,'L');
+        /*requisito
+        $pdf->Ln(5);
+        $pdf->Row(array(utf8_decode("Nº"),utf8_decode("REQUISITO")));
+        $i = 1;
+        foreach ($requisito as $row) {
+            $pdf->Row(array($i,utf8_decode($row['nombreRequisito'])));
+            //$pdf->Ln(5);
+            $i++;
+        }
+        //*/
         $pdf->Ln(5);
         $pdf->Cell(130,10,utf8_decode('ZONA: ').utf8_decode($dataDatos['zona']),0,0,'L');
         $pdf->Ln(5);
@@ -287,7 +321,7 @@ class Form extends CI_Controller{
         $pdf->Ln(20);
         $pdf->SetFont('Arial','B',9);
         
-        $pdf->Cell(130,10,utf8_decode('Yo '.strtoupper($data['nombreCompleto'])).' con C.I. '.$data['ci'].' expedido '.$expedido['expedido'].',',0,0,'L');
+        $pdf->Cell(130,10,utf8_decode('Yo '.strtoupper($data['nombreCompleto'])).' con C.I. '.$data['ci'].' expedido '.$data['idexpedido'].',',0,0,'L');
         $pdf->Ln(7);
         $pdf->SetFont('Arial','',9);
         $pdf->MultiCell(180,5,utf8_decode($constancia),0,'J');
@@ -296,7 +330,7 @@ class Form extends CI_Controller{
         $pdf->SetFont('Arial','',12);
         $pdf->Cell(180,5,utf8_decode($data['nombreCompleto']),0,0,'C',1);
         $pdf->Ln(5);
-        $pdf->Cell(180,5,utf8_decode($data['ci'].' '.$expedido['expedido']),0,0,'C',1);
+        $pdf->Cell(180,5,utf8_decode($data['ci'].' '.$data['idexpedido']),0,0,'C',1);
 
         $pdf->Output("formulariosolicitud.pdf","I");
     }

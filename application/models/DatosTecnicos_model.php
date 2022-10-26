@@ -64,6 +64,17 @@ class DatosTecnicos_model extends CI_Model
     }
 
     /**
+     * GetAllDatosTecnicos.
+     * @return result_array con datos de varios datotecnicos.
+     */
+    function geListaDatosTecnicos()
+    {
+        $this->db->order_by('iddatotecnico', 'desc');
+        $this->db->where('estado', 1);
+        return $this->db->get('datotecnico')->result_array();
+    }
+
+    /**
      * AddDatosTecnicos.
      * @param $params Datos de los campos de la base de datos y su valor a guardar.
      * @return Id del ultimos datotecnico guardado.
@@ -103,7 +114,7 @@ class DatosTecnicos_model extends CI_Model
      * @return result con iddatotecnico, nombre, direccion, telefono, email.
      */
     public function getDatosTecnicosReporte($iddatotecnico, $idpersona){
-        $this->db->select('iddatotecnico, tipotramite, fecha,zona, direccion, manzano, predio, avaluo,codigo,distrito,subdistrito');
+        $this->db->select('iddatotecnico, idtipotramite, fecha,zona, direccion, manzano, predio, avaluo,codigo,distrito,subdistrito');
         $this->db->Where('iddatotecnico',$iddatotecnico);
         $this->db->Where('idpersona',$idpersona);
         return $this->db->get('datotecnico')->row_array();

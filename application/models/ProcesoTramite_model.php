@@ -244,10 +244,11 @@ class ProcesoTramite_model extends CI_Model
     function procesoOnlyTramiteById($idpersona)
     {
         $this->db->select('DISTINCT(pt.idtramite)');
-        $this->db->from('persona p, personatramite pt');
-
+        $this->db->from('personatramite pt');
+        $this->db->where('activo',1);
         $this->db->where('pt.idpersona',$idpersona);
-        return $this->db->get()->row_array();
+
+        return $this->db->get()->result_array();
     }
 
     function procesoTramiteByCodigo($codigo)

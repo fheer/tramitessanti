@@ -28,7 +28,7 @@ class NormaLegal_model extends CI_Model
      */
     function getNormaLegalBySlug($slug)
     {
-        return $this->db->get_where('normalegal',array('slug'=>$slug))->row_array();
+        return $this->db->get_where('normalegal',array('key'=>$slug))->row_array();
     }
 
 
@@ -107,7 +107,7 @@ class NormaLegal_model extends CI_Model
     function updateNormaLegal($slug,$params)
     {
         ///*
-        $this->db->where('slug',$slug);
+        $this->db->where('key',$slug);
         return $this->db->update('normalegal',$params);
         //*/
     }

@@ -91,7 +91,7 @@ $route['proceso/manual/(:any)'] = "ProcesoTramite/abrirNamualPdf/$1";
 $route['proceso/cambiar/(:any)/(:any)'] = "ProcesoTramite/cambiarEstado/$1/$2";
 $route['proceso/requisitos/(:any)'] = "ProcesoTramite/docs/$1";
 $route['proceso/sumardias/(:any)'] = "ProcesoTramite/getTramiteDias/$1";
-
+$route['proceso/nuevo-tramite/(:any)/(:any)'] = "ProcesoTramite/nuevo/$1/$2";
 
 $route['norma'] = "Norma/index";
 $route['norma/nuevo'] = "Norma/insert";
@@ -142,6 +142,8 @@ $route['formulario'] = "Form/insert";
 $route['formulario/datos'] = "Form/datoTecnicos";
 $route['formulario/guardar'] = "Form/guardarDT";
 $route['formulario/save'] = "Form/guardarDB";
+$route['formulario/lista'] = "Form/listaSolicitud";
+
 
 $route['validar/(:any)'] = "Solicitante/validarCi/$1";
 

@@ -138,7 +138,7 @@ class Norma extends CI_Controller{
     {
         $params = array(
             'normalegal' => $this->input->post('normalegal'),
-            'slug' => $this->generateSlug($normalegal),
+            'key' => $this->generateSlug($normalegal),
         );
         return $params;
     }

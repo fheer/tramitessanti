@@ -26,7 +26,7 @@
         <div class="form-group row">
           <label for="nombreNorma Legal" class="col-sm-2 col-form-label">Nombre Norma Legal</label>
           <div class="col-sm-7">
-            <input type="hidden" class="form-control" name="slug" value="<?php echo $normalegal['slug'];?>">
+            <input type="hidden" class="form-control" name="slug" value="<?php echo $normalegal['key'];?>">
             <input type="text" class="form-control" name="normalegal" value="<?php echo $normalegal['normalegal'];?>">
             <span class="text-danger"><?php echo form_error('normalegal');?></span>
           </div>

@@ -7,11 +7,13 @@
   $TramitesMd5 = md5("3");
   $SeguimientoMd5 = md5("4");
   $UsuariosMd5 = md5("5");
+  $FormMd5 = md5("6");
   $opciones = '';
   $personas = '';
   $tramites = '';
   $seguimiento = '';
   $usuarios = '';
+  $form = '';
   foreach ($permisos as $permisoMd5)
   {
     switch ($permisoMd5)
@@ -30,6 +32,9 @@
       break;
       case $UsuariosMd5:
       $usuarios = "checked";
+      break;
+      case $FormMd5:
+      $form = "checked";
       break;
     }
   }
@@ -58,10 +63,10 @@
           <div class="col-sm-4">
             <input type="text" class="form-control" name="nombres" value="<?php echo $persona['nombreCompleto']; ?>" readonly >
             <input type="hidden" class="form-control" name="idpersona" value="<?php echo $persona['idpersona']; ?>" >
-            <input type="hidden" class="form-control" name="idusuario" value="<?php echo $usuario['idusuario']; ?>">
+            <input type="hidden" class="form-control" name="idusuario" value="<?php echo $usuario['idpersona']; ?>">
             <input type="hidden" class="form-control" name="usuario" value="<?php echo $usuario['usuario']; ?>">
             <input type="hidden" class="form-control" name="foto" value="<?php echo $usuario['foto']; ?>">
-            <input type="hidden" class="form-control" name="slug" value="<?php echo $usuario['slug']; ?>">
+            <input type="hidden" class="form-control" name="slug" value="<?php echo $usuario['key']; ?>">
 
             <img src="<?php echo base_url().'fotos/usuarios/'.$usuario['foto']; ?>" height="99" width="50">
           </div>
@@ -110,6 +115,12 @@
               <label class="form-check-label">
                 <input type="checkbox" name="permisos[]" value="5" class="form-check-input" <?php echo $usuarios;?>>
                 Usuarios
+              </label>
+            </div>
+            <div class="form-check form-check-warning">
+              <label class="form-check-label">
+                <input type="checkbox" name="permisos[]" value="6" class="form-check-input" <?php echo $form;?>>
+                Formulario
               </label>
             </div>
           </div>

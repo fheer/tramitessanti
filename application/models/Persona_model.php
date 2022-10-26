@@ -107,6 +107,14 @@ class Persona_model extends CI_Model
         return $this->db->get_where('persona',array('ci'=>$ci))->row_array();
     }
 
+    function getPersonaByApellido($apellido)
+    {
+        $this->db->select("idpersona, concat_ws(' ',nombres,IFNULL(apellidoPaterno, ''),IFNULL(apellidoMaterno, '')) as nombreCompleto");
+        $this->db->like('apellidoPaterno',$apellido);
+        $this->db->like('apellidoMaterno',$apellido);
+        return $this->db->get('persona',array('ci'=>$ci))->result_array();
+    }
+
     function getPersonaHojaById($idpersona)
     {
         $this->db->select("idpersona, concat_ws(' ',nombres,IFNULL(apellidoPaterno, ''),IFNULL(apellidoMaterno, '')) as nombreCompleto,nombres, apellidoPaterno, apellidoMaterno, ci, genero, estadoCivil, fechaNacimiento, tipoPersona, direccion, telefono, celular, key, estado, idexpedido");

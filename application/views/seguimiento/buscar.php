@@ -79,23 +79,23 @@
                     $ciTInstance->load->model("Persona_model");
                     $ciTInstance->load->model("TipoTramite_model");
                     $i=1;
+                    //print_r($personatramite);
                     foreach ($personatramite as $row) {
-                    $tramiteBuscar = $ciTInstance->Tramite_model->getTramite($personatramite['idtramite']);
+                    $tramiteBuscar = $ciTInstance->Tramite_model->getTramite($row['idtramite']);
                     $tipotramite = $ciTInstance->TipoTramite_model->getTipoTramiteId($tramiteBuscar['idtipotramite']);
                     //echo $tramiteBuscar['idtipotramite'].'<br>';
-                    //print_r($tipotramite);
-                    $idpersona = $ciTInstance->Persona_model->getIdPersonaTramite($personatramite['idtramite']);
+                    $idpersona = $ciTInstance->Persona_model->getIdPersonaTramite($row['idtramite']);
 
-                    //print_r($idpersona);
-                    $originalDate = $tramite['fechaInicio'];
+                    //print_r($tramiteBuscar['fechaInicio']);
+                    $originalDate = $tramiteBuscar['fechaInicio'];
                     $fechaInicio = date("d-m-Y", strtotime($originalDate));
-                    $originalDate1 = $tramite['fechaFin'];
+                    $originalDate1 = $tramiteBuscar['fechaFin'];
                     $fechaFin = date("d-m-Y", strtotime($originalDate1));
                     
                   ?>
                   <tr>
                       <td align="center"><?php echo $i; ?></td>
-                      <td align="center"><?php echo $tramite['codigo']; ?></td>
+                      <td align="center"><?php echo $tramiteBuscar['codigo']; ?></td>
                       <td align="center"><?php echo $tipotramite['nombreRequisito']; ?></td>
                       <td align="center"><?php echo $fechaInicio; ?></td>
                       <td align="center"><?php echo $fechaFin; ?></td>
