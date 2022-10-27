@@ -346,7 +346,9 @@ foreach ($permisos as $permisoMd5)
             <div class="collapse" id="ui-basic">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> 
-                <a class="nav-link" href="<?php echo  base_url();?>proceso/lista">Lista Tramite</a></li>
+                <a class="nav-link" href="<?php echo  base_url();?>proceso/lista/1">Tramites En Curso</a></li>
+                <li class="nav-item"> 
+                <a class="nav-link" href="<?php echo  base_url();?>proceso/lista/2">Tramites Aprobados</a></li>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo  base_url();?>formulario/lista">Solicitud de Trámites</a></li>
               </ul>
             </div>

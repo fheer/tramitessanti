@@ -25,13 +25,16 @@ class ProcesoTramite extends CI_Controller{
     /**
      * Index inicia la vista header index y footer para procesoTramite.
      */
-    function index()
+    function index($opcion)
     {
-        $data['tramite'] = $this->ProcesoTramite_model->getAllProcesoTramite();
+        //echo $opcion;
+        ///*
+        $data['tramite'] = $this->ProcesoTramite_model->getAllProcesoTramite($opcion);
         
         $this->load->view('layout/header');
         $this->load->view('procesoTramite/index',$data);
         $this->load->view('layout/footer');
+        //*/
     }
 
     /**
