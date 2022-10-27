@@ -204,9 +204,13 @@ class ProcesoTramite_model extends CI_Model
      * GetAllProcesoTramite.
      * @return result_array con datos de varios tramites.
      */
-    function getAllProcesoTramite()
+    function getAllProcesoTramite($opcion)
     {
-        //$this->db->where('estado', 1);
+        if ($opcion==1) {
+            $this->db->where('estado', 1);
+        }else{
+            $this->db->where('estado', 0);
+        }
         $this->db->order_by('estado', 'desc');       
         return $this->db->get('tramite')->result_array();
     }
@@ -245,7 +249,7 @@ class ProcesoTramite_model extends CI_Model
     {
         $this->db->select('DISTINCT(pt.idtramite)');
         $this->db->from('personatramite pt');
-        $this->db->where('activo',1);
+        //$this->db->where('activo',1);
         $this->db->where('pt.idpersona',$idpersona);
 
         return $this->db->get()->result_array();
@@ -381,6 +385,33 @@ class ProcesoTramite_model extends CI_Model
         );
         $this->db->insert('observacion',$paramsTramiteObservacion);
 
+        if ($this->db->trans_status() === FALSE){
+            //Hubo errores en la consulta, entonces se cancela la transacción.
+            $this->db->trans_rollback();
+            return 0;
+        }else{
+            //Todas las consultas se hicieron correctamente.
+            $this->db->trans_commit();
+            return $idtramite;
+        }
+        //*/
+    }
+
+    /**
+     * UpdateProcesoTramite.
+     * @param $idtramite Id del tramite.
+     * @param $params Datos de los campos de la base de datos y su valor a modificar.
+     * @return Id del tramite modificado
+     */
+    function updatePTTerminado($idtramite, $params)
+    {
+                     
+        $this->db->trans_begin();
+
+        $this->db->where('idtramite',$idtramite);
+        $this->db->update('tramite',$params);
+        //*/   
+        
         if ($this->db->trans_status() === FALSE){
             //Hubo errores en la consulta, entonces se cancela la transacción.
             $this->db->trans_rollback();

@@ -128,11 +128,7 @@ class Asignados extends CI_Controller{
             }else {
 
                 $params = $this->datosUpdateTramitePersona($idtramite, $idusuario, $idpersona, $fechaFin);
-
-
-
                 $persona_tramite_id = $this->ProcesoTramite_model->updatePersonaTramite($idpersonatramite, $params);
-
                 $paramsSave = $this->datosSaveTramitePersona($idtramite, $idusuarioNew, $idpersona, $fechaInicio, $idusuarioNew);
 
                 $persona_tramite_id = $this->PersonaTramite_model->addPersonaTramite($paramsSave, $idtramite, $idusuario, $idusuarioNew);
@@ -171,13 +167,20 @@ class Asignados extends CI_Controller{
                 'de' => $idusuario,
                 'a' => $idusuarioNew,
             );
-            $this->db->insert('tramiteunidad',$paramsTramiteUnidad);
+            //$this->db->insert('tramiteunidad',$paramsTramiteUnidad);
 
             $paramsTramiteObservacion = array(
                 'idtramite' => $idtramite,
                 'observaciones' => $observaciones,
             );
             $this->db->insert('observacion',$paramsTramiteObservacion);
+
+            $paramsTerminado = array(
+                'idtramite' => $idtramite,
+                'estado' => 0,
+            );
+            $persona_tramite_id = $this->ProcesoTramite_model->updatePTTerminado($idtramite, $paramsTerminado);
+
             break;
                 //*/
         }

@@ -86,7 +86,7 @@ class Form extends CI_Controller{
         {   
             $data['opcion'] = $opcion;
             $data['actividad'] = $this->Actividad_model->getAllActividad();
-            $data['expedido'] = $this->Expedido_model->getAllExpedido();
+            //$data['expedido'] = $this->Expedido_model->getAllExpedido();
             $this->load->view('layout/header');
             $this->load->view('form/form',$data);
             $this->load->view('layout/footer');

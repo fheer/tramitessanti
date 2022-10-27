@@ -78,7 +78,7 @@ $route['tipotramite/guardar'] = "TipoTramite/guardarDB";
 $route['tipotramite/editar/(:any)'] = "TipoTramite/editar/$1";
 $route['tipotramite/modificar'] = "TipoTramite/editarDB";
 
-$route['proceso/lista'] = "ProcesoTramite/index";
+$route['proceso/lista/(:any)'] = "ProcesoTramite/index/$1";
 $route['proceso/listar/(:any)'] = "ProcesoTramite/listar/$1";
 $route['proceso/cargarrequisitos/(:any)'] = "ProcesoTramite/getTramiteRequisitos/$1";
 $route['proceso/nuevo'] = "ProcesoTramite/insert";
