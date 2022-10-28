@@ -30,7 +30,7 @@ class ProcesoTramite extends CI_Controller{
         //echo $opcion;
         ///*
         $data['tramite'] = $this->ProcesoTramite_model->getAllProcesoTramite($opcion);
-        
+        $data['opcion'] = $opcion;
         $this->load->view('layout/header');
         $this->load->view('procesoTramite/index',$data);
         $this->load->view('layout/footer');
@@ -104,15 +104,28 @@ class ProcesoTramite extends CI_Controller{
     /**
      * Insert inicia la vista header add y footer para procesoTramite.
      */
-    function nuevo($idtipotramite,$idpersona)
+    function nuevo($idtipotramite,$idpersona,$iddatotecnico)
     {
         $data['persona'] = $this->Persona_model->getPersonaId($idpersona);
         $data['tipotramite'] = $this->TipoTramite_model->getTipoTramiteId($idtipotramite);
         $data['funcionario'] = $this->Funcionario_model->getAllFuncionario();
-
+        $data['iddatotecnico'] = $iddatotecnico;
         //*
         $this->load->view('layout/header');
         $this->load->view('procesoTramite/add',$data);
+        $this->load->view('layout/footer');
+        //*/
+    }
+
+    /**
+     * Insert inicia la vista header add y footer para procesoTramite.
+     */
+    function enCurso($opcion)
+    {
+        $data['opcion'] = $opcion;
+        //*
+        $this->load->view('layout/header');
+        $this->load->view('procesoTramite/reporte',$data);
         $this->load->view('layout/footer');
         //*/
     }
@@ -192,8 +205,10 @@ class ProcesoTramite extends CI_Controller{
     {   
         $idpersona = $this->input->post('idpersona');
         $idtipotramite = $this->input->post('idtipotramite');
-
+        $idtipotramite = $this->input->post('idtipotramite');
         $idfuncionario = $this->session->userdata('idusuario');
+        $iddatotecnico = $this->input->post('iddatotecnico');
+
         $idfuncionarioNew = $this->input->post('idfuncionario');
         //echo 'hola';
         $direccion = $this->input->post('direccion');
@@ -202,7 +217,21 @@ class ProcesoTramite extends CI_Controller{
         $datosFuncionario = $this->Persona_model->getDatosfuncionarioUsuario($idfuncionario);
         //print_r($datosFuncionario);
         $idusuario = $datosFuncionario['idpersona'];
+        $faseFunc = $this->Persona_model->getPersonaHojaById($idfuncionarioNew);
 
+        //print_r();
+        if ($faseFunc['idcargo']==3) {
+            $fase = "1";
+        }
+        if ($faseFunc['idcargo']==2) {
+            $fase = "2";
+        }
+        if ($faseFunc['idcargo']==1) {
+            $fase = "3";
+        }
+        if ($faseFunc['idcargo']==4) {
+            $fase = "4";
+        }
         ///*
         $fechaInicio = $this->input->post('fechaInicio');
         $fechaInicio = date("Y-m-d", strtotime($fechaInicio));
@@ -224,11 +253,11 @@ class ProcesoTramite extends CI_Controller{
                 $codigo = $this->generarCodigo($nombreTipoTramite, $cantidadTramites);
                 $params = $this->datosTramite($idtipotramite,$codigo, $fechaInicio, $fechaFin,$direccion,$latitud,$longitud);
                 //print_r($params);
-                $procesoTratmiteId = $this->ProcesoTramite_model->addProcesoTramite($params, $idusuario, $idfuncionarioNew, $idpersona, $fechaInicio, $fechaFin);
+                $procesoTratmiteId = $this->ProcesoTramite_model->addProcesoTramite($params, $idusuario, $idfuncionarioNew, $idpersona, $fechaInicio, $fechaFin,$fase,$iddatotecnico);
 
                 $this->datosArchivosTramite($procesoTratmiteId);
 
-                redirect(base_url().'proceso/lista'); 
+                redirect(base_url().'proceso/lista/1');
             }else{
                 $data['persona'] = $this->Persona_model->getTodasPersonasFullName();
                 $data['tipotramite'] = $this->TipoTramite_model->getTodosLosTramites();
@@ -415,33 +444,57 @@ class ProcesoTramite extends CI_Controller{
      */
     public function reporteTramite()
     {
-        $data = $this->ProcesoTramite_model->getAllProcesoTramite();
-             
+
+        $de = $this->input->post('de');
+        $hasta = $this->input->post('hasta');
+
+        $newDateDe = date("d/m/Y", strtotime($de));
+
+        $newDateHasta = date("d/m/Y", strtotime($hasta));
+        if ($de>$hasta) {
+
+            $data['mensaje'] = 'La fecha DE no puede MAYOR a la fecha HASTA';
+            ///*
+            $this->load->view('layout/header');
+            $this->load->view('proceso/reporte',$data);
+            $this->load->view('layout/footer');
+            //*/
+        }else{
+
+        $data = $this->ProcesoTramite_model->getAllTramiteFechas(1,$de,$hasta);
+
         $pdf = new PDF_MC_Table();
         //$pdf=new FPDF();
-        $pdf->AddPage('L','A4');
+        $pdf->AddPage('P','A4');
         $pdf->AliasNbPages();
         $pdf->SetLeftMargin(15);
         $pdf->SetRightMargin(15);
         $pdf->SetFillColor(300,300,300);
         $pdf->SetXY(31, 11);
-        /*
-        $logoConsejo = base_url()."fotos/logo.jpg";
-        $pdf->Image($logoConsejo, 255, 5, 25, 23);
-        $logo = base_url()."fotos/consejo.jpg";
+
+        $logo = base_url()."fotos/logo1.jpg";
         $pdf->Image($logo, 15, 5, 25, 23);
-        */
-        $pdf->SetFont('Arial','B',12);
-        $pdf->Cell(30);
-        $pdf->Cell(185,10,utf8_decode('LISTA TRAMITES'),0,0,'C');
+
+        $hoy = date("d/m/Y");
+
+        $pdf->SetXY(15, 11);
+        $pdf->SetFont('Arial','B',10);
+        $pdf->Cell(185,10,utf8_decode('GOBIERNO AUTONOMO MUNCIPAL'),0,0,'R');
+        $pdf->SetXY(15, 15);
+        $pdf->Cell(185,10,utf8_decode('Fecha Impresion '. $hoy),0,0,'R');
+        $pdf->SetXY(15, 19);
+        $pdf->Cell(185,10,utf8_decode('Usuario: '.$this->session->userdata('usuario')),0,0,'R');
+        $pdf->Ln(15);
+        $pdf->SetFont('Arial','B',16);
+
+        $pdf->Cell(185,10,utf8_decode('LISTA TRAMITES EN CURSO DE ' .$newDateDe. ' A '.$newDateHasta),0,0,'C');
 
         $pdf->Ln(10);
-        $pdf->SetFont('Arial','',11);
-        $pdf->SetWidths(array(20,30,70,70,40,35));
+        $pdf->SetFont('Arial','B',12);
+        $pdf->SetWidths(array(10,30,50,45,25,25));
         $pdf->Row(array(utf8_decode("Nº"),utf8_decode("Nº TRAMITE"),utf8_decode("SOLICIANTE"),utf8_decode("TIPO DE TRAMITE"),utf8_decode("FECHA INICIO"),utf8_decode("FECHA FIN")));
-        $pdf->SetFont('Arial','',10);
         $indice=1;
-
+        $pdf->SetFont('Arial','',12);
         foreach ($data as $row) {
             ///*
             $personatramite = $this->Persona_model->getPersonaTramite($row['idtramite']);
@@ -450,20 +503,191 @@ class ProcesoTramite extends CI_Controller{
 
             $solicitante = $this->Persona_model->getPersonaId($personatramite['idpersona']);
             //$usuario = $this->Persona_model->getPersonaByIdUsuario($personatramite['idfuncionario']);
-            $tipotramite = $this->TipoTramite_model->getTipoTramite($row['idtipotramite']);
-            
+            $tipotramite = $this->TipoTramite_model->getTipoTramiteReporte($row['idtipotramite']);
+            //print_r($tipotramite);
             $originalDate = $row['fechaInicio'];
             $fechaInicio = date("d-m-Y", strtotime($originalDate));
 
             $originalDate = $row['fechaFin'];
             $fechaFin = date("d-m-Y", strtotime($originalDate));
             //*/
-            $pdf->Row(array($indice,utf8_decode($row['codigo']),utf8_decode($solicitante['nombreCompleto']),utf8_decode($tipotramite['nombre']),utf8_decode($fechaInicio),utf8_decode($fechaFin)));
+            $pdf->Row(array($indice,utf8_decode($row['codigo']),utf8_decode($solicitante['nombreCompleto']),utf8_decode($tipotramite['nombreRequisito']),utf8_decode($fechaInicio),utf8_decode($fechaFin)));
             //$pdf->Ln(5);
             $indice++;
         }
+            $pdf->Output("encurso.pdf","I");
+        }
+    }
 
-        $pdf->Output("listarequisitos.pdf","I");
+    /**
+     * ReportePersona genera el reporte de procesoTramites en formato pdf.
+     */
+    public function reporteTramitesAprobados()
+    {
+
+        $de = $this->input->post('de');
+        $hasta = $this->input->post('hasta');
+
+        $newDateDe = date("d/m/Y", strtotime($de));
+
+        $newDateHasta = date("d/m/Y", strtotime($hasta));
+        if ($de>$hasta) {
+
+            $data['mensaje'] = 'La fecha DE no puede MAYOR a la fecha HASTA';
+            ///*
+            $this->load->view('layout/header');
+            $this->load->view('proceso/reporte',$data);
+            $this->load->view('layout/footer');
+            //*/
+        }else{
+
+        $data = $this->ProcesoTramite_model->getAllTramiteFechas(2,$de,$hasta);
+
+        $pdf = new PDF_MC_Table();
+        //$pdf=new FPDF();
+        $pdf->AddPage('P','A4');
+        $pdf->AliasNbPages();
+        $pdf->SetLeftMargin(15);
+        $pdf->SetRightMargin(15);
+        $pdf->SetFillColor(300,300,300);
+        $pdf->SetXY(31, 11);
+        ///*
+        //$logoConsejo = base_url()."fotos/logo.jpg";
+        //$pdf->Image($logoConsejo, 255, 5, 25, 23);
+        $logo = base_url()."fotos/logo1.jpg";
+        $pdf->Image($logo, 15, 5, 25, 23);
+
+        $hoy = date("d/m/Y");
+
+        $pdf->SetXY(15, 11);
+        $pdf->SetFont('Arial','B',10);
+        $pdf->Cell(185,10,utf8_decode('GOBIERNO AUTONOMO MUNCIPAL'),0,0,'R');
+        $pdf->SetXY(15, 15);
+        $pdf->Cell(185,10,utf8_decode('Fecha Impresion '. $hoy),0,0,'R');
+        $pdf->SetXY(15, 19);
+        $pdf->Cell(185,10,utf8_decode('Usuario: '.$this->session->userdata('usuario')),0,0,'R');
+        //*/
+        $pdf->Ln(15);
+        $pdf->SetFont('Arial','B',16);
+        //$pdf->Cell(30);
+        $pdf->Cell(185,10,utf8_decode('LISTA TRAMITES APROBADOS DE ' .$newDateDe. ' A '.$newDateHasta),0,0,'C');
+
+        $pdf->Ln(10);
+        $pdf->SetFont('Arial','B',12);
+        $pdf->SetWidths(array(10,30,50,45,25,25));
+        $pdf->Row(array(utf8_decode("Nº"),utf8_decode("Nº TRAMITE"),utf8_decode("SOLICIANTE"),utf8_decode("TIPO DE TRAMITE"),utf8_decode("FECHA INICIO"),utf8_decode("FECHA FIN")));
+        $pdf->SetFont('Arial','',10);
+        $indice=1;
+        $pdf->SetFont('Arial','',12);
+        foreach ($data as $row) {
+            ///*
+            $personatramite = $this->Persona_model->getPersonaTramite($row['idtramite']);
+            $idsolicitante = $personatramite['idpersonatramite'];
+            $usuario = $personatramite['idfuncionario'];
+
+            $solicitante = $this->Persona_model->getPersonaId($personatramite['idpersona']);
+            //$usuario = $this->Persona_model->getPersonaByIdUsuario($personatramite['idfuncionario']);
+            $tipotramite = $this->TipoTramite_model->getTipoTramiteReporte($row['idtipotramite']);
+            //print_r($tipotramite);
+            $originalDate = $row['fechaInicio'];
+            $fechaInicio = date("d-m-Y", strtotime($originalDate));
+
+            $originalDate = $row['fechaFin'];
+            $fechaFin = date("d-m-Y", strtotime($originalDate));
+            //*/
+            $pdf->Row(array($indice,utf8_decode($row['codigo']),utf8_decode($solicitante['nombreCompleto']),utf8_decode($tipotramite['nombreRequisito']),utf8_decode($fechaInicio),utf8_decode($fechaFin)));
+            //$pdf->Ln(5);
+            $indice++;
+        }
+            $pdf->Output("aprobados.pdf","I");
+        }
+    }
+
+    /**
+     * ReportePersona genera el reporte de procesoTramites en formato pdf.
+     */
+    public function reporteFases()
+    {
+
+        $de = $this->input->post('de');
+        $hasta = $this->input->post('hasta');
+        $fase = $this->input->post('fase');
+
+        $newDateDe = date("d/m/Y", strtotime($de));
+
+        $newDateHasta = date("d/m/Y", strtotime($hasta));
+
+        if ($de>$hasta) {
+
+            $data['mensaje'] = 'La fecha DE no puede MAYOR a la fecha HASTA';
+            ///*
+            $this->load->view('layout/header');
+            $this->load->view('proceso/reporte',$data);
+            $this->load->view('layout/footer');
+            //*/
+        }else{
+
+        $data = $this->ProcesoTramite_model->getAllTramiteFase($fase,$de,$hasta);
+
+        $pdf = new PDF_MC_Table();
+        //$pdf=new FPDF();
+        $pdf->AddPage('P','A4');
+        $pdf->AliasNbPages();
+        $pdf->SetLeftMargin(15);
+        $pdf->SetRightMargin(15);
+        $pdf->SetFillColor(300,300,300);
+        $pdf->SetXY(31, 11);
+        ///*
+        //$logoConsejo = base_url()."fotos/logo.jpg";
+        //$pdf->Image($logoConsejo, 255, 5, 25, 23);
+        $logo = base_url()."fotos/logo1.jpg";
+        $pdf->Image($logo, 15, 5, 25, 23);
+
+        $hoy = date("d/m/Y");
+
+        $pdf->SetXY(15, 11);
+        $pdf->SetFont('Arial','B',10);
+        $pdf->Cell(185,10,utf8_decode('GOBIERNO AUTONOMO MUNCIPAL'),0,0,'R');
+        $pdf->SetXY(15, 15);
+        $pdf->Cell(185,10,utf8_decode('Fecha Impresion '. $hoy),0,0,'R');
+        $pdf->SetXY(15, 19);
+        $pdf->Cell(185,10,utf8_decode('Usuario: '.$this->session->userdata('usuario')),0,0,'R');
+        //*/
+        $pdf->Ln(15);
+        $pdf->SetFont('Arial','B',16);
+        //$pdf->Cell(30);
+        $pdf->Cell(185,10,utf8_decode('LISTA TRAMITES POR FASES ' .$newDateDe. ' A '.$newDateHasta),0,0,'C');
+
+        $pdf->Ln(10);
+        $pdf->SetFont('Arial','B',12);
+        $pdf->SetWidths(array(10,30,65,55,25));
+        $pdf->Row(array(utf8_decode("Nº"),utf8_decode("CÓDIGO TRAMITE"),utf8_decode("SOLICIANTE"),utf8_decode("TIPO DE TRAMITE"),utf8_decode("FASE")));
+        $pdf->SetFont('Arial','',10);
+        $indice=1;
+        $pdf->SetFont('Arial','',12);
+        foreach ($data as $row) {
+            ///*
+            $personatramite = $this->Persona_model->getPersonaTramite($row['idtramite']);
+            $idsolicitante = $personatramite['idpersonatramite'];
+            $usuario = $personatramite['idfuncionario'];
+
+            $solicitante = $this->Persona_model->getPersonaId($personatramite['idpersona']);
+            $funcionario = $this->Persona_model->getPersonaId($personatramite['idfuncionario']);
+            //$usuario = $this->Persona_model->getPersonaByIdUsuario($personatramite['idfuncionario']);
+            $tipotramite = $this->TipoTramite_model->getTipoTramiteReporte($row['idtipotramite']);
+            //print_r($tipotramite);
+            $originalDate = $row['fechaInicio'];
+            $fechaInicio = date("d-m-Y", strtotime($originalDate));
+
+            $originalDate = $row['fechaFin'];
+            $fechaFin = date("d-m-Y", strtotime($originalDate));
+            //*/
+            $pdf->Row(array($indice,utf8_decode($row['codigo']),utf8_decode($solicitante['nombreCompleto']),utf8_decode($tipotramite['nombreRequisito']),utf8_decode('Fase '.$row['fase'])));
+            //$pdf->Ln(5);
+            $indice++;
+        }
+            $pdf->Output("aprobados.pdf","I");
+        }
     }
 
     /**
@@ -585,4 +809,5 @@ class ProcesoTramite extends CI_Controller{
         }
     } 
 }
+
 

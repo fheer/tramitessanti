@@ -91,7 +91,9 @@ $route['proceso/manual/(:any)'] = "ProcesoTramite/abrirNamualPdf/$1";
 $route['proceso/cambiar/(:any)/(:any)'] = "ProcesoTramite/cambiarEstado/$1/$2";
 $route['proceso/requisitos/(:any)'] = "ProcesoTramite/docs/$1";
 $route['proceso/sumardias/(:any)'] = "ProcesoTramite/getTramiteDias/$1";
-$route['proceso/nuevo-tramite/(:any)/(:any)'] = "ProcesoTramite/nuevo/$1/$2";
+$route['proceso/nuevo-tramite/(:any)/(:any)/(:any)'] = "ProcesoTramite/nuevo/$1/$2/$3";
+
+//$route['proceso/reporte-en-curso/(:any)/(:any)'] = "ProcesoTramite/reporteTramite/$1/$2";
 
 $route['norma'] = "Norma/index";
 $route['norma/nuevo'] = "Norma/insert";
@@ -135,6 +137,11 @@ $route['imprimir/requisito'] = "Requisito/reporteRequisito";
 $route['imprimir/tipotramite'] = "TipoTramite/reporteTipoTramite";
 $route['imprimir/procesotramite'] = "ProcesoTramite/reporteTramite";
 $route['imprimir/usuarios'] = "Usuario/reporteUsuario";
+$route['imprimir/reporte-en-curso/(:any)'] = "ProcesoTramite/enCurso/$1";
+$route['imprimir/imprimir-en-curso'] = "ProcesoTramite/reporteTramite";
+$route['imprimir/imprimir-aprobados'] = "ProcesoTramite/reporteTramitesAprobados";
+$route['imprimir/imprimir-fases'] = "ProcesoTramite/reporteFases";
+
 
 $route['mapa/ver/(:any)/(:any)'] = "Mapa/index/$1/$2";
  
@@ -157,6 +164,7 @@ $route['predio/imprimir/(:any)/(:any)'] = "Predio/imprimir/$1/$2";
 $route['predio/editar/(:any)'] = "Predio/editar/$1";
 $route['predio/modificar'] = "Predio/editarDB";
 $route['predio/eliminar/(:any)/(:any)'] = "Predio/cambiarEstado/$1/$2";
+
 /*
 $route['norma/modificar/(:any)'] = "Norma/editar/$1";
 $route['norma/editar'] = "Norma/editarDB";

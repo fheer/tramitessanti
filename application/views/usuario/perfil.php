@@ -70,7 +70,7 @@
                       </div>
                       <div class="profile-feed">
                         <div class="d-flex align-items-start profile-feed-item">
-                          <?php echo form_open(base_url().'usuario/modificar/'.$this->session->userdata('idPersona'),array("class"=>"forms-sample","enctype"=>"multipart/form-data")); ?>
+                          <?php echo form_open(base_url().'usuario/modificar/'.$this->session->userdata('idpersona'),array("class"=>"forms-sample","enctype"=>"multipart/form-data")); ?>
                           <button class="btn btn-primary btn-block">Modificar Datos Personales</button>
                           <?php echo form_close(); ?>
                         </div>

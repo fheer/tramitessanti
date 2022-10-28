@@ -243,6 +243,7 @@ class Usuario_model extends CI_Model
                 'foto' => $ru->foto,
                 'tipo' => $ru->tipoPersona,
                 'idusuario' => $ru->idpersona,
+                'usuario' => $ru->usuario,
                 'token' => $ru->key,
                 'logueado' => TRUE
             );

@@ -131,7 +131,6 @@ foreach ($permisos as $permisoMd5)
                     
                   </span>
                 </div>
-                
               </div>
             </div>
           </li>
@@ -347,7 +346,7 @@ foreach ($permisos as $permisoMd5)
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> 
                 <a class="nav-link" href="<?php echo  base_url();?>proceso/lista/1">Tramites En Curso</a></li>
-                <li class="nav-item"> 
+                <li class="nav-item">
                 <a class="nav-link" href="<?php echo  base_url();?>proceso/lista/2">Tramites Aprobados</a></li>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo  base_url();?>formulario/lista">Solicitud de Trámites</a></li>
               </ul>
@@ -376,6 +375,20 @@ foreach ($permisos as $permisoMd5)
           <?php
            } 
           ?>
+
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#e-commerce" aria-expanded="false" aria-controls="e-commerce">
+              <i class="fas fa-shopping-cart menu-icon"></i>
+              <span class="menu-title">Reportes</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="e-commerce">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url();?>imprimir/reporte-en-curso/3" target="_blank"> Fases </a></li>
+              </ul>
+            </div>
+          </li>
+
           <!--
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-advanced" aria-expanded="false" aria-controls="ui-advanced">

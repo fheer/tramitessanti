@@ -26,6 +26,17 @@ class TipoTramite_model extends CI_Model
      * @param $idtipotramite Id del TipoTramite.
      * @return row_array con datos de un tipotramite.
      */
+    function getTipoTramiteReporte($idtipotramite)
+    {
+        return $this->db->get_where('tipotramite',array('idtipotramite'=>$idtipotramite))->row_array();
+    }
+
+
+    /**
+     * GetTipoTramite.
+     * @param $idtipotramite Id del TipoTramite.
+     * @return row_array con datos de un tipotramite.
+     */
     function getTipoTramiteCodigo($idtipotramite)
     {
         return $this->db->get_where('tipotramite',array('idtipotramite'=>$idtipotramite))->row_array();

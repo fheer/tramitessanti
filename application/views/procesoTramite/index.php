@@ -12,9 +12,14 @@
   <div class="content-wrapper">
     <div class="page-header">
       <div class="pull-right">
-        <a href="<?php echo  base_url();?>proceso/nuevo" class="btn btn-outline-info"><span class="fa fa-plus-circle" aria-hidden="true"></span> Nuevo Tramite</a>
-        <a href="<?php echo base_url();?>imprimir/procesotramite" target="_blank" class="btn btn-info">
-          <span class="fa fa-print" aria-hidden="true"></span> Imprimir Lista</a>
+        <?php if ($opcion==1) {
+        ?>
+        <a href="<?php echo base_url();?>imprimir/reporte-en-curso/1" target="_blank" class="btn btn-info">
+          <span class="fa fa-print" aria-hidden="true"></span> Imprimir Lista Trámites en Curso</a>
+        <?php }else{ ?>
+          <a href="<?php echo base_url();?>imprimir/reporte-en-curso/2" target="_blank" class="btn btn-info">
+          <span class="fa fa-print" aria-hidden="true"></span> Imprimir Lista Trámites Aprobados</a>
+        <?php } ?>
       </div>
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">

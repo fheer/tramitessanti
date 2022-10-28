@@ -127,9 +127,25 @@ class Asignados extends CI_Controller{
                 
             }else {
 
+                $data['funcionario'] = $this->Funcionario_model->getAllFuncionarioIdCargo($idusuarioNew);
+
+
+                if ($data['funcionario']['idcargo']==3) {
+                    $fase = "1";
+                }
+                if ($data['funcionario']['idcargo']==2) {
+                    $fase = "2";
+                }
+                if ($data['funcionario']['idcargo']==1) {
+                    $fase = "3";
+                }
+                if ($data['funcionario']['idcargo']==4) {
+                    $fase = "4";
+                }
+
                 $params = $this->datosUpdateTramitePersona($idtramite, $idusuario, $idpersona, $fechaFin);
                 $persona_tramite_id = $this->ProcesoTramite_model->updatePersonaTramite($idpersonatramite, $params);
-                $paramsSave = $this->datosSaveTramitePersona($idtramite, $idusuarioNew, $idpersona, $fechaInicio, $idusuarioNew);
+                $paramsSave = $this->datosSaveTramitePersona($idtramite, $idusuarioNew, $idpersona, $fechaInicio, $idusuarioNew,$fase);
 
                 $persona_tramite_id = $this->PersonaTramite_model->addPersonaTramite($paramsSave, $idtramite, $idusuario, $idusuarioNew);
 
@@ -245,7 +261,7 @@ class Asignados extends CI_Controller{
     /**
      * Datos setea los datos para utilizar en GuardarDB y EditarDB.
      */
-    function datosSaveTramitePersona($idtramite, $idfuncionario, $idpersona, $fechaInicio = null, $idusuarioNew = null)
+    function datosSaveTramitePersona($idtramite, $idfuncionario, $idpersona, $fechaInicio = null, $idusuarioNew = null,$fase)
     {        
         $params = array(
             'idpersona' => $idpersona,
@@ -253,6 +269,7 @@ class Asignados extends CI_Controller{
             'idfuncionario' => $idusuarioNew,
             'fechaInicio' => $fechaInicio,
             'pdf' => $this->subirPDF(),
+            'fase' => $fase,
             'fechaFin' => null,
         );
         return $params;

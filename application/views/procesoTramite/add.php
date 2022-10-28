@@ -31,6 +31,7 @@
                   <div class="form-group row">
                     <label for="idtipotramite" class="col-sm-3 col-form-label">Tramite</label>
                     <div class="col-sm-5">
+                       <input type="hidden" class="form-control" name="iddatotecnico" value="<?php echo $iddatotecnico; ?>" >
                       <select class="js-example-basic-single w-100" id="idtipotramite" name="idtipotramite">
                         <option value="0">Seleccione tramite</option>
                         <?php //foreach ($tipotramite as $row) { ?>

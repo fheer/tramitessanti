@@ -81,9 +81,6 @@ class Usuario extends CI_Controller{
         $opcion = 3;
         $data['opcion'] = $opcion;
         $data['solicitante'] = $this->Persona_model->getPersonaId($idpersona);
-        $idexpedido = $data['solicitante']['idexpedido'];
-        $data['exp'] = $this->Expedido_model->getExpedido($idexpedido);
-        $data['expedido'] = $this->Expedido_model->getAllExpedido();
         $data['actividad'] = $this->Solicitante_model->getSolicitanteIdPersona($idpersona);
 
         if ($data['actividad']['idactividad'] <> 3) {
@@ -96,8 +93,9 @@ class Usuario extends CI_Controller{
             $data['position'] = $this->Cargo_model->getCargo($idcargo);
             $data['cargo'] = $this->Cargo_model->getAllCargo();
         }
-            
-        ///* 
+
+        //print_r($data['position'])    ;
+        ///*
         $this->load->view('layout/header');
         $this->load->view('usuario/updateDatos',$data);
         $this->load->view('layout/footer');
@@ -195,8 +193,8 @@ class Usuario extends CI_Controller{
                 $params = $this->datosUpdate();
                 $idusuario = $this->Usuario_model->updateUsuario($idusuario,$params);
                 $data['usuario'] = $this->Usuario_model->getUsuarioById($idusuario);
-                $data['mensaje'] = 'Salga de la aplicación e ingrese con su nueva contraseña'; 
-
+                $data['mensaje'] = 'Salga de la aplicación e ingrese con su nueva contraseña';
+                $data['usuario'] = $this->Usuario_model->getUsuarioById($idusuario);
                 $data['modificado'] = 1;
 
                 $this->load->view('layout/header');
