@@ -219,6 +219,39 @@ class ProcesoTramite_model extends CI_Model
      * GetAllProcesoTramite.
      * @return result_array con datos de varios tramites.
      */
+    function getAllTramiteFechas($opcion, $de, $hasta)
+    {
+        if ($opcion==1) {
+            $this->db->where('estado', 1);
+        }else{
+            $this->db->where('estado', 0);
+        }
+        $this->db->where('fechaInicio>=', $de);
+        $this->db->where('fechaInicio<=', $hasta);
+        $this->db->order_by('estado', 'desc');
+        return $this->db->get('tramite')->result_array();
+    }
+
+    /**
+     * GetAllProcesoTramite.
+     * @return result_array con datos de varios tramites.
+     */
+    function getAllTramiteFase($fase, $de, $hasta)
+    {
+        ///*
+        $this->db->from('tramite t');
+        $this->db->join('personatramite pt','t.idtramite=pt.idtramite');
+        $this->db->where('pt.fase', $fase);
+        $this->db->where('t.fechaInicio BETWEEN "'.$de. '" and "'.$hasta.'"');
+
+        return $this->db->get()->result_array();
+        //*/
+    }
+
+    /**
+     * GetAllProcesoTramite.
+     * @return result_array con datos de varios tramites.
+     */
     function getAllProcesoTramiteByEstado($estado)
     {
         $this->db->where('estado', $estado);
@@ -300,7 +333,7 @@ class ProcesoTramite_model extends CI_Model
      * @param $params Datos de los campos de la base de datos y su valor a guardar.
      * @return Id del ultimos tramite guardado.
      */
-    function addProcesoTramite($params, $idfuncionario, $idfuncionarioNew, $idpersona, $fechaInicio, $fechaFin)
+    function addProcesoTramite($params, $idfuncionario, $idfuncionarioNew, $idpersona, $fechaInicio, $fechaFin, $fase,$iddatotecnico)
                             //($idtramite,$params, $observaciones)
     {
         $this->db->trans_begin();
@@ -314,6 +347,7 @@ class ProcesoTramite_model extends CI_Model
             'idfuncionario' => $idfuncionarioNew,
             'fechaInicio' => $fechaInicio,
             'fechaFin' => $fechaFin,
+            'fase' => $fase,
             'activo' => 1,
         );
         
@@ -336,6 +370,13 @@ class ProcesoTramite_model extends CI_Model
             'observaciones' => $observaciones,
         );
         $this->db->insert('observacion',$paramsTramiteObservacion);
+
+        $formData = array(
+            'estado' => 0,
+        );
+
+        $this->db->where('iddatotecnico',$iddatotecnico);
+        $this->db->update('datotecnico',$formData);
 
         if ($this->db->trans_status() === FALSE){
             //Hubo errores en la consulta, entonces se cancela la transacción.
@@ -405,13 +446,13 @@ class ProcesoTramite_model extends CI_Model
      */
     function updatePTTerminado($idtramite, $params)
     {
-                     
+
         $this->db->trans_begin();
 
         $this->db->where('idtramite',$idtramite);
         $this->db->update('tramite',$params);
-        //*/   
-        
+        //*/
+
         if ($this->db->trans_status() === FALSE){
             //Hubo errores en la consulta, entonces se cancela la transacción.
             $this->db->trans_rollback();

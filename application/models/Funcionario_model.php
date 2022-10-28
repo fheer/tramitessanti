@@ -137,12 +137,26 @@ class Funcionario_model extends CI_Model
      */
     function getAllFuncionarioFullName()
     {
-        $this->db->select("p.idpersona, c.cargo, concat_ws(' ',p.nombres,IFNULL(p.apellidoPaterno, ''),IFNULL(p.apellidoMaterno, '')) as nombreCompleto ");
+        $this->db->select("p.idpersona, c.cargo, c.idcargo, concat_ws(' ',p.nombres,IFNULL(p.apellidoPaterno, ''),IFNULL(p.apellidoMaterno, '')) as nombreCompleto ");
         $this->db->from('persona p');
         $this->db->join('cargo c','c.idcargo=p.idcargo');
         $this->db->order_by('p.idpersona', 'asc');  
         $this->db->where('p.tipoPersona', 2);
 
         return $this->db->get()->result_array();
+    }
+
+    /**
+     * GetAllFuncionario.
+     * @return result_array con datos de varios funcionarios.
+     */
+    function getAllFuncionarioIdCargo($idpersona)
+    {
+        $this->db->select("p.idpersona, c.cargo, c.idcargo, concat_ws(' ',p.nombres,IFNULL(p.apellidoPaterno, ''),IFNULL(p.apellidoMaterno, '')) as nombreCompleto ");
+        $this->db->from('persona p');
+        $this->db->join('cargo c','c.idcargo=p.idcargo');
+        $this->db->where('p.tipoPersona', 2);
+         $this->db->where('p.idpersona', $idpersona);
+        return $this->db->get()->row_array();
     }
 }

@@ -70,7 +70,7 @@ class Persona_model extends CI_Model
      */
     function getPersonaId($idpersona)
     {
-        $this->db->select("idpersona, concat_ws(' ',nombres,IFNULL(apellidoPaterno, ''),IFNULL(apellidoMaterno, '')) as nombreCompleto,nombres, apellidoPaterno, apellidoMaterno, ci, genero, estadoCivil, fechaNacimiento, tipoPersona, direccion, telefono, celular, key, estado, idexpedido");
+        $this->db->select("idpersona, concat_ws(' ',nombres,IFNULL(apellidoPaterno, ''),IFNULL(apellidoMaterno, '')) as nombreCompleto,nombres, apellidoPaterno, apellidoMaterno, ci, genero, estadoCivil, fechaNacimiento, tipoPersona, direccion, telefono, celular, key, estado, idexpedido,idcargo");
         return $this->db->get_where('persona',array('idpersona'=>$idpersona))->row_array();
     }
 
@@ -117,7 +117,7 @@ class Persona_model extends CI_Model
 
     function getPersonaHojaById($idpersona)
     {
-        $this->db->select("idpersona, concat_ws(' ',nombres,IFNULL(apellidoPaterno, ''),IFNULL(apellidoMaterno, '')) as nombreCompleto,nombres, apellidoPaterno, apellidoMaterno, ci, genero, estadoCivil, fechaNacimiento, tipoPersona, direccion, telefono, celular, key, estado, idexpedido");
+        $this->db->select("idpersona, concat_ws(' ',nombres,IFNULL(apellidoPaterno, ''),IFNULL(apellidoMaterno, '')) as nombreCompleto,nombres, apellidoPaterno, apellidoMaterno, ci, genero, estadoCivil, fechaNacimiento, tipoPersona, direccion, telefono, celular, key, estado, idexpedido, idcargo");
         return $this->db->get_where('persona',array('idpersona'=>$idpersona))->row_array();
     }
 
@@ -321,7 +321,7 @@ class Persona_model extends CI_Model
         }else{
             //Todas las consultas se hicieron correctamente.
             $this->db->trans_commit();
-            //return $idpersona;
+            return $idpersona;
         }
     }
 

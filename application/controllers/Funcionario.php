@@ -158,13 +158,15 @@ class Funcionario extends CI_Controller{
             
             if($this->form_validation->run())     
             {   
-                $params = $this->datos();
+                $params = $this->datosPerfil();
 
-                $this->Persona_model->updatePersona($idfuncionario,$params);            
+                $idpersona = $this->Persona_model->updatePersona($idfuncionario,$params);
+                $token = $this->Funcionario_model->getFuncionarioId($idpersona);
                 if ($opcion == 2) {
                     redirect(base_url().'funcionario');           
                 }else{
-                    redirect(base_url().'perfil/ver/'.$this->session->userdata('token'));
+
+                    redirect(base_url().'perfil/ver/'.$token['key']);
                 }
             }
             else
@@ -240,6 +242,34 @@ class Funcionario extends CI_Controller{
             'usuario' => $this->generarNombreUsuario($nombres, $apellidoPaterno, $apellidoMaterno, $ci),
             'clave' => $this->generarPassword($ci),
             'permisos' => MD5(4).'#',
+        );
+        return $params;
+    }
+
+    function datosPerfil()
+    {
+        $ci = $this->input->post('ci');
+        $nombres = $this->input->post('nombres');
+        $apellidoPaterno = $this->input->post('apellidoPaterno');
+        $apellidoMaterno = $this->input->post('apellidoMaterno');
+        $params = array(
+            'ci' => $this->input->post('ci'),
+            'nombres' => $this->input->post('nombres'),
+            'apellidoPaterno' => $this->input->post('apellidoPaterno'),
+            'apellidoMaterno' => $this->input->post('apellidoMaterno'),
+            'genero' => $this->input->post('genero'),
+            'idexpedido' => $this->input->post('idexpedido'),
+            'estadoCivil' => $this->input->post('estadoCivil'),
+            'tipoPersona' => $this->input->post('tipoPersona'),
+            'fechaNacimiento' => $this->input->post('fechaNacimiento'),
+            'direccion' => $this->input->post('direccion'),
+            'telefono' => $this->input->post('telefono'),
+            'celular' => $this->input->post('celular'),
+            'idcargo' => $this->input->post('idcargo'),
+            'idactividad' => 3,
+            'key' => $this->generateSlug($this->input->post('ci')),
+            'usuario' => $this->generarNombreUsuario($nombres, $apellidoPaterno, $apellidoMaterno, $ci),
+            'clave' => $this->generarPassword($ci),
         );
         return $params;
     }

@@ -12,9 +12,9 @@
   <div class="content-wrapper">
     <div class="page-header">
       <div class="pull-right">
-        <a href="<?php echo  base_url();?>formulario" class="btn btn-outline-info"><span class="fa fa-plus-circle" aria-hidden="true"></span> Nueva Solicitud de Trámite</a>
-        <a href="<?php echo base_url();?>imprimir/procesotramite" target="_blank" class="btn btn-info">
+        <!--<a href="<?php echo base_url();?>imprimir/procesotramite" target="_blank" class="btn btn-info">
           <span class="fa fa-print" aria-hidden="true"></span> Imprimir Lista</a>
+         -->
       </div>
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -80,7 +80,7 @@
                             <?php
                             if ($row['estado']==1) {
                             ?>
-                               <a href="<?php echo base_url().'proceso/nuevo-tramite/'.$row['idtipotramite']; ?>/<?php echo $row['idpersona']?>"
+                               <a href="<?php echo base_url().'proceso/nuevo-tramite/'.$row['idtipotramite']; ?>/<?php echo $row['idpersona']?>/<?php echo $row['iddatotecnico']?>"
                               title="Modificar informacion" onClick="">
                               &nbsp <i style="color:555;" class="fa fa-plus-circle"></i> Iniciar Trámite
                             </a>

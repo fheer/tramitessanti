@@ -67,7 +67,7 @@
                       <td><?php echo $row['codigo'];?></td>
                       <td><?php
                       if ($funcionario['tipoPersona']==2) {
-                         $pos = strpos($cargo['cargo'], 'Ascesor legal');
+                         $pos = strpos($cargo['cargo'], 'Asesor legal');
                          if ($pos !== false) {
                           echo $funcionario['nombreCompleto']. ' - ' . $cargo['cargo']. ' FASE 1';
                          }
