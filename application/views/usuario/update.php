@@ -21,10 +21,10 @@
           <div class="col-sm-4">
             <input type="text" class="form-control" name="nombres" value="<?php echo $persona['nombreCompleto']; ?>" readonly >
             <input type="hidden" class="form-control" name="idpersona" value="<?php echo $persona['idpersona']; ?>" >
-            <input type="hidden" class="form-control" name="idusuario" value="<?php echo $usuario['idusuario']; ?>">
+            <input type="hidden" class="form-control" name="idusuario" value="<?php echo $usuario['idpersona']; ?>">
             <input type="hidden" class="form-control" name="usuario" value="<?php echo $usuario['usuario']; ?>">
             <input type="hidden" class="form-control" name="foto" value="<?php echo $usuario['foto']; ?>">
-            <input type="hidden" class="form-control" name="slug" value="<?php echo $usuario['slug']; ?>">
+            <input type="hidden" class="form-control" name="slug" value="<?php echo $usuario['key']; ?>">
           </div>
         </div>
         <div class="form-group row">
