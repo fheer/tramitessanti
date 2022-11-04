@@ -28,9 +28,9 @@
           <label for="idnormalegal" class="col-sm-2 col-form-label">Nro Norma Legal</label>
           <div class="col-sm-3">
             <select class="js-example-basic-single w-100" name="idnormalegal">
-              <option value="<?php echo $normalegalID['idnormalegal']; ?>"><?php echo $normalegalID['normalegal']; ?></option>
+              <option value="<?php echo $normalegalID['idnormaLegal']; ?>"><?php echo $normalegalID['normalegal']; ?></option>
               <?php foreach ($normalegal as $row) { ?>
-                <option value="<?php echo $row['idnormalegal']; ?>"><?php echo $row['normalegal']; ?></option>
+                <option value="<?php echo $row['idnormaLegal']; ?>"><?php echo $row['normalegal']; ?></option>
               <?php } ?> 
             </select>
             <span class="text-danger"><?php echo form_error('idnormalegal');?></span>
@@ -40,9 +40,9 @@
           <label for="nombre" class="col-sm-2 col-form-label">Trámite</label>
           <div class="col-sm-4">
             <input type="hidden" class="form-control" name="idtipotramite" value="<?php echo $tipotramite['idtipotramite']; ?>">
-            <input type="text" class="form-control" name="slug" value="<?php echo $tipotramite['key']; ?>">
-            <input type="text" class="form-control" name="nombre" value="<?php echo $tipotramite['nombre']; ?>">
-            <span class="text-danger"><?php echo form_error('nombre');?></span>
+            <input type="hidden" class="form-control" name="slug" value="<?php echo $tipotramite['key']; ?>">
+            <input type="text" class="form-control" name="nombre" value="<?php echo $tipotramite['nombreRequisito']; ?>">
+            <span class="text-danger"><?php echo form_error('nombreRequisito');?></span>
           </div>
         </div>
         

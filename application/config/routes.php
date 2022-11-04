@@ -128,7 +128,7 @@ $route['seguimiento/hoja/(:any)/(:any)'] = "Seguimiento/hojaderuta/$1/$2";
 $route['seguimiento/buscar'] = "Seguimiento/buscarByCi";
 $route['seguimiento/horaderuta'] = "Seguimiento/hojaruta";
 $route['seguimiento/reportehojaderuta'] = "Seguimiento/buscarHoja";
-
+$route['seguimiento/bitacora/(:any)'] = "Seguimiento/bitacora/$1";
 
 $route['imprimir/datosfuncionario'] = "Funcionario/reporteFuncionario";
 $route['imprimir/solicitantes'] = "Solicitante/reportePersona";

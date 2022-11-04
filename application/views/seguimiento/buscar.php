@@ -120,6 +120,12 @@
                               &nbsp <i style="color:#555;" class="fa fa-edit"></i> Seguimiento
                               </a>                       
                             </li>
+                            <li>
+                              <a href="<?php echo base_url().'seguimiento/bitacora/'.$tramiteBuscar['idtramite']; ?>"
+                              title="Imprimir Resumen" target="_blank">
+                              &nbsp <i style="color:#555;" class="fa fa-edit"></i> Bitacora
+                              </a>
+                            </li>
                         </ul>
                       </div>
                     </span>

@@ -21,6 +21,11 @@ class TipoTramite_model extends CI_Model
         return $this->db->get_where('tipotramite',array('idtipotramite'=>$idtipotramite))->result_array();
     }
 
+    function getTipoTramiteIdTipoTramite($idtipotramite)
+    {
+        return $this->db->get_where('tipotramite',array('idtipotramite'=>$idtipotramite))->row_array();
+    }
+
     /**
      * GetTipoTramite.
      * @param $idtipotramite Id del TipoTramite.
@@ -58,9 +63,9 @@ class TipoTramite_model extends CI_Model
      * @param $idtipotramite Id del TipoTramite.
      * @return row_array con datos de un tipotramite.
      */
-    function getTipoTramiteSlug($slug)
+    function getTipoTramiteSlug($key)
     {
-        return $this->db->get_where('tipotramite',array('slug'=>$slug))->row_array();
+        return $this->db->get_where('tipotramite',array('key'=>$key))->row_array();
     }
 
     /**
@@ -68,11 +73,11 @@ class TipoTramite_model extends CI_Model
      * @param $idtipotramite Id del TipoTramite.
      * @return row_array con datos de un tipotramite.
      */
-    function getIdBySlug($slug)
+    function getIdBySlug($key)
     {
-        $this->db->select('idtipotramite,nombre');
+        $this->db->select('idtipotramite,nombreRequisito');
         $this->db->FROM('tipotramite');
-        $this->db->WHERE('slug', $slug);
+        $this->db->WHERE('key', $key);
         $this->db->WHERE('estado', 1);
         $resultado = $this->db->get();
         if ($resultado->num_rows() > 0) {

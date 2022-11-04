@@ -29,7 +29,7 @@
           <div class="col-sm-3">
             <select class="js-example-basic-single w-100" name="idnormalegal">
               <?php foreach ($normalegal as $row) { ?>
-                <option value="<?php echo $row['idnormalegal']; ?>"><?php echo $row['normalegal']; ?></option>
+                <option value="<?php echo $row['idnormaLegal']; ?>"><?php echo $row['normalegal']; ?></option>
               <?php } ?> 
             </select>
             <span class="text-danger"><?php echo form_error('idnormalegal');?></span>

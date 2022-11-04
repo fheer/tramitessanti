@@ -148,7 +148,9 @@ class Seguimiento extends CI_Controller{
             $pdf->Cell(130,10,utf8_decode('SOLICITANTE '.$nombreCompleto['nombreCompleto']),0,0,'L');
             $pdf->Ln(5);
             $pdf->Cell(130,10,utf8_decode('Nº TRAMITE '.$codigo),0,0,'L');
-            $pdf->Ln(10);
+            $pdf->Ln(5);
+
+
             $pdf->SetFont('Arial','',11);
             $pdf->SetWidths(array(10,40,40,45,45));
             $pdf->Row(array(utf8_decode("Nº"),utf8_decode("UNIDAD ORIGEN"),utf8_decode("FECHA INICIO"),utf8_decode("FECHA FIN")));
@@ -183,6 +185,124 @@ class Seguimiento extends CI_Controller{
         }
         //*/
     }
+
+    /**
+     * Insert inicia la vista header add y footer para procesoTramite.
+     */
+    function bitacora($idtramite)
+    {
+
+        $data= $this->ProcesoTramite_model->procesoTramiteByIdBitacora($idtramite);
+
+        $dataTramite = $this->Tramite_model->getTramite($idtramite);
+        $tipoTramite = $this->TipoTramite_model->getTipoTramiteId($dataTramite['idtipotramite']);
+        $nombreTramite = $tipoTramite['nombreRequisito'];
+
+        $pdf = new PDF_MC_Table();
+        $pdf->AddPage();
+        $pdf->AliasNbPages();
+        $pdf->SetLeftMargin(15);
+        $pdf->SetRightMargin(15);
+        $pdf->SetFillColor(300,300,300);
+        $pdf->SetXY(31, 11);
+
+        foreach ($data as $rowDatos) {
+                $nombreCompleto = $this->Persona_model->getPersonaId($rowDatos['idpersona']);
+                //$solicitante = $nombreCompleto['nombreCompleto'];
+                $codigo = $rowDatos['codigo'];
+        }
+            $logo = base_url()."fotos/logo1.jpg";
+            $pdf->Image($logo, 15, 5, 25, 23);
+
+            date_default_timezone_set("America/La_Paz");
+
+            $hoy = date("d/m/Y H:i:s");
+
+            $pdf->SetXY(15, 11);
+            $pdf->SetFont('Arial','B',10);
+            $pdf->Cell(185,10,utf8_decode('GOBIERNO AUTONOMO MUNCIPAL'),0,0,'R');
+            $pdf->SetXY(15, 15);
+            $pdf->Cell(185,10,utf8_decode('Fecha Impresion '. $hoy),0,0,'R');
+            $pdf->SetXY(15, 19);
+            $pdf->Cell(185,10,utf8_decode('Usuario: '.$this->session->userdata('usuario')),0,0,'R');
+            $pdf->Ln(15);
+            $pdf->SetFont('Arial','B',14);
+
+            $pdf->Cell(180,10,utf8_decode('BITACORA'),0,0,'C');
+            $pdf->Ln(10);
+            $pdf->Cell(130,10,utf8_decode('SOLICITANTE: '.$nombreCompleto['nombreCompleto']),0,0,'L');
+            $pdf->Ln(5);
+            $pdf->Cell(130,10,utf8_decode('Nº TRAMITE: '.$codigo),0,0,'L');
+            $pdf->Ln(5);
+            $pdf->Cell(130, 10, utf8_decode('Trámite: '.$nombreTramite),0,0,'L');
+            $pdf->Ln(10);
+            $pdf->SetFont('Arial','B',11);
+            $pdf->SetWidths(array(10,50,30,30,30,40));
+            $pdf->Row(array(utf8_decode("Nº"),utf8_decode("FUNCIONARIO - CARGO"),utf8_decode("FASE"),utf8_decode("FECHA INICIO"),utf8_decode("FECHA FIN"),utf8_decode("OBSERVACIÓN")));
+            $pdf->SetFont('Arial','',10);
+            $indice=1;
+            $obs= $this->ProcesoTramite_model->getObservacionesId($idtramite);
+
+            //$numero = count($obs);
+            $i = 0;
+            foreach ($obs as $key) {
+                    // code...
+                if ($i == 0) {
+                    //$fase = $key['observaciones'];
+                }
+                if ($i == 1) {
+                    $fase1 = $key['observaciones'];
+                }
+                if ($i == 2) {
+                    $fase2 = $key['observaciones'];
+                }
+                if ($i == 3) {
+                    $fase3 = $key['observaciones'];
+                }
+                if ($i == 4) {
+                    $fase3 = $key['observaciones'];
+                }
+                $i++;
+            }
+
+            $var1 = 0;
+            $var2 = 0;
+            $var3 = 0;
+            $var4 = 0;
+
+            foreach ($data as $row) {
+                $funcionario = $this->Persona_model->getPersonaByIdfuncionario($row['idfuncionario']);
+                $cargo = $this->Cargo_model->getCargo($funcionario['idcargo']);
+
+                if ($indice==1) {
+                    $pdf->Row(array($indice,utf8_decode($cargo['cargo'].' - '.$funcionario['nombreCompleto']),utf8_decode($row['fase']),utf8_decode($row['fechaInicio']),utf8_decode($row['fechaFin']),utf8_decode($fase1)));
+                }
+
+                if ($indice==2) {
+                    if (empty($fase2)) {
+                        $fase2 = '';
+                    }
+                    $pdf->Row(array($indice,utf8_decode($cargo['cargo'].' - '.$funcionario['nombreCompleto']),utf8_decode($row['fase']),utf8_decode($row['fechaInicio']),utf8_decode($row['fechaFin']),utf8_decode($fase2)));
+                }
+                if ($indice==3) {
+                    if (!empty($fase3)) {
+                        $fase3 = '';
+                    }
+                    $pdf->Row(array($indice,utf8_decode($cargo['cargo'].' - '.$funcionario['nombreCompleto']),utf8_decode($row['fase']),utf8_decode($row['fechaInicio']),utf8_decode($row['fechaFin']),utf8_decode($fase3)));
+                }
+                if ($indice==4) {
+                    if (!empty($fase4)) {
+                        $fase4 = '';
+                    }
+                    $pdf->Row(array($indice,utf8_decode($cargo['cargo'].' - '.$funcionario['nombreCompleto']),utf8_decode($row['fase']),utf8_decode($row['fechaInicio']),utf8_decode($row['fechaFin']),utf8_decode($fase4)));
+                }
+                $indice++;
+            }
+
+            $pdf->Output("bitacora.pdf","I");
+    }
+
+
 
     /**
      * GetTramiteRequisitos.
