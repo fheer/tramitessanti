@@ -80,6 +80,7 @@ class PersonaTramite_model extends CI_Model
     function getUnidadTramite($idtramite, $idfuncionario)
     {
 
+
         $this->db->select('u.nombreunidad AS nombre');
         $this->db->FROM('personaunidad pu');
         $this->db->join('unidad u','u.idunidad=pu.idunidad','inner');

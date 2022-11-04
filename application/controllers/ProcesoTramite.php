@@ -185,7 +185,7 @@ class ProcesoTramite extends CI_Controller{
         $data['tipotramite'] = $this->TipoTramite_model->getTodosLosTramites();
         
         $idtipotramite = $data['procesoTramite']['idtipotramite'];
-        $data['nombretramite'] = $this->TipoTramite_model->getTipoTramite($idtipotramite);
+        $data['nombretramite'] = $this->TipoTramite_model->getTipoTramiteIdTipoTramite($idtipotramite);
 
         $data['requistosTramite']  = $this->TipoTramite_model->getTramiteRequisitos($idtipotramite);
 
@@ -475,7 +475,7 @@ class ProcesoTramite extends CI_Controller{
         $logo = base_url()."fotos/logo1.jpg";
         $pdf->Image($logo, 15, 5, 25, 23);
 
-        $hoy = date("d/m/Y");
+        $hoy = date("d/m/Y H:i:s");
 
         $pdf->SetXY(15, 11);
         $pdf->SetFont('Arial','B',10);

@@ -308,27 +308,25 @@ class Funcionario extends CI_Controller{
         $pdf->SetRightMargin(15);
         $pdf->SetFillColor(300,300,300);
         $pdf->SetXY(31, 11);
-        /*
-        $logoConsejo = base_url()."fotos/logo.jpg";
-        $pdf->Image($logoConsejo, 175, 5, 25, 23);
-        $logo = base_url()."fotos/consejo.jpg";
-        $pdf->Image($logo, 15, 5, 25, 23);
-        $pdf->Image($logoConsejo, 15, 5, 25, 23);
-        
-        $pdf->SetFont('Arial','B',8);
-        $pdf->Cell(5);
-        //$pdf->Cell(161,3,utf8_decode('FONDO DE DESARROLLO EMPRESARIAL'),0,0,'R');
-        //$pdf->Ln(5);
-        //$pdf->Cell(182,3,utf8_decode('Dirección: Av. Lanza Edificio Delagadillo Oficina 10'),0,0,'R');
-        $pdf->Ln(5);
-        */
-        //$pdf->Cell(182,3,utf8_decode('Usuario: '.$this->session->userdata('s_login')),0,0,'R');
-        //$pdf->Ln(5);
-        //$pdf->Cell(182,3,utf8_decode('Fecha Impresión: ').date('d-m-Y'),0,0,'R');        
-        $pdf->SetFont('Arial','B',12);
+
+        $logo = base_url()."fotos/logo1.jpg";
+            $pdf->Image($logo, 15, 5, 25, 23);
+
+            date_default_timezone_set("America/La_Paz");
+
+            $hoy = date("d/m/Y H:i:s");
+
+            $pdf->SetXY(15, 11);
+            $pdf->SetFont('Arial','B',10);
+            $pdf->Cell(185,10,utf8_decode('GOBIERNO AUTONOMO MUNCIPAL'),0,0,'R');
+            $pdf->SetXY(15, 15);
+            $pdf->Cell(185,10,utf8_decode('Fecha Impresion '. $hoy),0,0,'R');
+            $pdf->SetXY(15, 19);
+            $pdf->Cell(185,10,utf8_decode('Usuario: '.$this->session->userdata('usuario')),0,0,'R');
+            $pdf->Ln(15);
+            $pdf->SetFont('Arial','B',14);
         //$pdf->Ln(15);
-        $pdf->Cell(30);
-        $pdf->Cell(100,10,utf8_decode('LISTA DE FUNCIONARIOS'),0,0,'C');
+        $pdf->Cell(180,10,utf8_decode('LISTA DE FUNCIONARIOS'),0,0,'C');
 
         $pdf->Ln(10);
         $pdf->SetFont('Arial','',11);

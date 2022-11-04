@@ -298,6 +298,16 @@ class ProcesoTramite_model extends CI_Model
         return $this->db->get()->result_array();
     }
 
+    function procesoTramiteByIdBitacora($idtramite)
+    {
+
+        $this->db->from('personatramite pt');
+        $this->db->join('tramite t', 't.idtramite=pt.idtramite', 'inner');
+        $this->db->join('persona p', 'p.idpersona=pt.idpersona', 'inner');
+        $this->db->where('t.idtramite',$idtramite);
+        return $this->db->get()->result_array();
+    }
+
     /**
      * GetAllProcesoTramite.
      * @return result_array con datos de varios tramites.
