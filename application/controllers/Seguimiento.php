@@ -275,6 +275,9 @@ class Seguimiento extends CI_Controller{
                 $cargo = $this->Cargo_model->getCargo($funcionario['idcargo']);
 
                 if ($indice==1) {
+                    if (empty($fase1)) {
+                        $fase1 = '';
+                    }
                     $pdf->Row(array($indice,utf8_decode($cargo['cargo'].' - '.$funcionario['nombreCompleto']),utf8_decode($row['fase']),utf8_decode($row['fechaInicio']),utf8_decode($row['fechaFin']),utf8_decode($fase1)));
                 }
 
@@ -285,14 +288,14 @@ class Seguimiento extends CI_Controller{
                     $pdf->Row(array($indice,utf8_decode($cargo['cargo'].' - '.$funcionario['nombreCompleto']),utf8_decode($row['fase']),utf8_decode($row['fechaInicio']),utf8_decode($row['fechaFin']),utf8_decode($fase2)));
                 }
                 if ($indice==3) {
-                    if (!empty($fase3)) {
-                        $fase3 = '';
+                    if (empty($fase3)) {
+                        $fase3 = ' ';
                     }
                     $pdf->Row(array($indice,utf8_decode($cargo['cargo'].' - '.$funcionario['nombreCompleto']),utf8_decode($row['fase']),utf8_decode($row['fechaInicio']),utf8_decode($row['fechaFin']),utf8_decode($fase3)));
                 }
                 if ($indice==4) {
-                    if (!empty($fase4)) {
-                        $fase4 = '';
+                    if (empty($fase4)) {
+                        $fase4 = ' ' ;
                     }
                     $pdf->Row(array($indice,utf8_decode($cargo['cargo'].' - '.$funcionario['nombreCompleto']),utf8_decode($row['fase']),utf8_decode($row['fechaInicio']),utf8_decode($row['fechaFin']),utf8_decode($fase4)));
                 }
