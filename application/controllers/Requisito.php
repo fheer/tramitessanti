@@ -136,7 +136,7 @@ class Requisito extends CI_Controller{
         $params = array(
             'nombreRequisito' => $this->input->post('nombreRequisito'),
             'descripcion' => $this->input->post('descripcion'),
-            'slug' => $this->generateSlug($nombreRequisito),
+            'key' => $this->generateSlug($nombreRequisito),
         );
         return $params;
     }

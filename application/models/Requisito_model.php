@@ -18,7 +18,7 @@ class Requisito_model extends CI_Model
      */
     function getRequisitoSlug($slug)
     {
-        return $this->db->get_where('requisito',array('slug'=>$slug))->row_array();
+        return $this->db->get_where('requisito',array('key'=>$slug))->row_array();
     }
 
     /**
@@ -112,7 +112,7 @@ class Requisito_model extends CI_Model
      */
     function updateRequisito($slug,$params)
     {
-        $this->db->where('slug',$slug);
+        $this->db->where('key',$slug);
         return $this->db->update('requisito',$params);
     }
 
