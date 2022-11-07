@@ -26,7 +26,7 @@
         <div class="form-group row">
           <label for="nombreRequisito" class="col-sm-2 col-form-label">Nombre Requisito</label>
           <div class="col-sm-7">
-            <input type="hidden" class="form-control" name="slug" value="<?php echo $requisito['slug']; ?>">
+            <input type="hidden" class="form-control" name="slug" value="<?php echo $requisito['key']; ?>">
             <input type="text" class="form-control" name="nombreRequisito" value="<?php echo $requisito['nombreRequisito']; ?>">
             <span class="text-danger"><?php echo form_error('nombreRequisito');?></span>
           </div>
