@@ -143,7 +143,7 @@
 
 
                   <button type="submit" class="btn btn-primary mr-2">Guardar</button>
-                  <a href="<?php echo base_url().'proceso/lista'; ?>" class="btn btn-light">Cancelar</a>
+                  <a href="<?php echo base_url().'proceso/lista/1'; ?>" class="btn btn-light">Cancelar</a>
                   <?php echo form_close(); ?>
                 </div>
               </div>

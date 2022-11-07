@@ -313,7 +313,7 @@ class ProcesoTramite extends CI_Controller{
             if(!empty($_POST['archivos'])){
                 $this->datosArchivosTramite($idtramite);
             }
-            redirect(base_url().'proceso/lista');
+            redirect(base_url().'proceso/lista/1');
       }else{
             echo 'else form validation';
       }
