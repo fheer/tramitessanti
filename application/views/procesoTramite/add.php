@@ -128,7 +128,7 @@
                   </div>
 
                   <button type="submit" class="btn btn-primary mr-2">Guardar</button>
-                  <a href="<?php echo base_url().'proceso/lista'; ?>" class="btn btn-light">Cancelar</a>
+                  <a href="<?php echo base_url().'formulario/lista'; ?>" class="btn btn-light">Cancelar</a>
                   </form>
                 </div>
               </div>
