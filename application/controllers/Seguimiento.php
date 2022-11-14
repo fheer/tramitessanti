@@ -51,6 +51,7 @@ class Seguimiento extends CI_Controller{
     {
         $data['persona'] = $this->Persona_model->getTodasPersonasFullName();
         $data['tramite'] = $this->ProcesoTramite_model->getAllProcesoTramite();
+
         ///* 
         $this->load->view('layout/header');
         $this->load->view('seguimiento/buscar',$data);
@@ -64,11 +65,19 @@ class Seguimiento extends CI_Controller{
     function buscarTramite()
     {
         $ci = $this->input->post('ci');
-
+        //echo $this->session->userdata('ci');
+        ///*
         $this->formValidation();
         
         if($this->form_validation->run())     
         {   
+            if ($ci != $this->session->userdata('ci')) {
+                $data['mensaje'] = 'Ud solo puede realizar busquedas e sus tramites ingrese su Cedula de Identidad';
+            ///* 
+            $this->load->view('layout/header');
+            $this->load->view('seguimiento/buscar',$data);
+            $this->load->view('layout/footer');
+            }else{
             $data['persona'] = $this->Persona_model->getPersonaCI($ci);
             $data['tramite'] = $this->ProcesoTramite_model->procesoTramiteById($data['persona']['idpersona']);
             //print_r($data);
@@ -77,7 +86,8 @@ class Seguimiento extends CI_Controller{
             $this->load->view('layout/header');
             $this->load->view('seguimiento/buscar',$data);
             $this->load->view('layout/footer');
-            //*/
+            }
+         
         }
         else
         {   
@@ -369,13 +379,20 @@ class Seguimiento extends CI_Controller{
 
         if($this->form_validation->run())
         {
-            $data['persona'] = $this->Persona_model->getPersonaCI($ci);
-            if (!empty($data['persona'])) {
-                $data['personatramite'] = $this->ProcesoTramite_model->procesoOnlyTramiteById($data['persona']['idpersona']);
-                if (!empty($data['personatramite'])) {
-                    $this->load->view('layout/header');
-                    $this->load->view('seguimiento/buscar',$data);
-                    $this->load->view('layout/footer');
+            if ($this->session->userdata('tipo') == 2) {
+                $data['persona'] = $this->Persona_model->getPersonaCI($ci);
+                if (!empty($data['persona'])) {
+                    $data['personatramite'] = $this->ProcesoTramite_model->procesoOnlyTramiteById($data['persona']['idpersona']);
+                    if (!empty($data['personatramite'])) {
+                        $this->load->view('layout/header');
+                        $this->load->view('seguimiento/buscar',$data);
+                        $this->load->view('layout/footer');
+                    }else{
+                        $data['mensaje'] = 'El solicitante no tiene trámites';
+                        $this->load->view('layout/header');
+                        $this->load->view('seguimiento/buscar',$data);
+                        $this->load->view('layout/footer');
+                    }
                 }else{
                     $data['mensaje'] = 'El solicitante no tiene trámites';
                     $this->load->view('layout/header');
@@ -383,11 +400,36 @@ class Seguimiento extends CI_Controller{
                     $this->load->view('layout/footer');
                 }
             }else{
-                $data['mensaje'] = 'El solicitante no tiene trámites';
+                if ($ci != $this->session->userdata('ci')) {
+                $data['mensaje'] = 'Ud solo puede realizar busquedas de sus tramites ingrese su Cedula de Identidad';
+                ///* 
                 $this->load->view('layout/header');
                 $this->load->view('seguimiento/buscar',$data);
                 $this->load->view('layout/footer');
+            }else{
+                $data['persona'] = $this->Persona_model->getPersonaCI($ci);
+                if (!empty($data['persona'])) {
+                    $data['personatramite'] = $this->ProcesoTramite_model->procesoOnlyTramiteById($data['persona']['idpersona']);
+                    if (!empty($data['personatramite'])) {
+                        $this->load->view('layout/header');
+                        $this->load->view('seguimiento/buscar',$data);
+                        $this->load->view('layout/footer');
+                    }else{
+                        $data['mensaje'] = 'El solicitante no tiene trámites';
+                        $this->load->view('layout/header');
+                        $this->load->view('seguimiento/buscar',$data);
+                        $this->load->view('layout/footer');
+                    }
+                }else{
+                    $data['mensaje'] = 'El solicitante no tiene trámites';
+                    $this->load->view('layout/header');
+                    $this->load->view('seguimiento/buscar',$data);
+                    $this->load->view('layout/footer');
+                }
             }
+
+            }
+            
         }else{
             $this->load->view('layout/header');
             $this->load->view('seguimiento/buscar');

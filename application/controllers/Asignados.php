@@ -111,7 +111,7 @@ class Asignados extends CI_Controller{
 
                 $data['personatramite'] = $this->PersonaTramite_model->getPersonaTramite($idtramite);
                 $data['tramite'] = $this->Tramite_model->getTramite($idtramite);
-                $data['tipotramite'] = $this->TipoTramite_model->getTipoTramite($data['tramite']['idtipotramite']);
+                $data['tipotramite'] = $this->TipoTramite_model->getTipoTramiteByIdTipoTramite($data['tramite']['idtipotramite']);
                 $data['persona'] = $this->Persona_model->getPersonaId($data['personatramite']['idpersona']);
                 $data['observaciones'] = $this->ProcesoTramite_model->getObservacionesId($data['tramite']['idtramite']);
 
@@ -162,9 +162,22 @@ class Asignados extends CI_Controller{
             case "no":
             $idusuarioNew = $idusuario;
               ///*
+            $data['funcionario'] = $this->Funcionario_model->getAllFuncionarioIdCargo($idusuarioNew);
+            if ($data['funcionario']['idcargo']==3) {
+                    $fase = "1";
+                }
+                if ($data['funcionario']['idcargo']==2) {
+                    $fase = "2";
+                }
+                if ($data['funcionario']['idcargo']==1) {
+                    $fase = "3";
+                }
+                if ($data['funcionario']['idcargo']==4) {
+                    $fase = "4";
+                }
             $params = $this->datosUpdateTramitePersona($idtramite, $idusuario, $idpersona, $fechaFin);
             $persona_tramite_id = $this->ProcesoTramite_model->updatePersonaTramite($idpersonatramite, $params);       
-            $paramsSave = $this->datosSaveTramitePersona($idtramite, $idusuario, $idpersona, $fechaInicio, $idusuarioNew);
+            $paramsSave = $this->datosSaveTramitePersona($idtramite, $idusuario, $idpersona, $fechaInicio, $idusuarioNew,$fase);
             $persona_tramite_id = $this->PersonaTramite_model->addPersonaTramite($paramsSave, $idtramite, $idusuario, $idusuarioNew);
             $paramsTramiteObservacion = array(
                 'idtramite' => $idtramite,
@@ -207,7 +220,7 @@ class Asignados extends CI_Controller{
 
         $data['personatramite'] = $this->PersonaTramite_model->getPersonaTramite($idtramite);
         $data['tramite'] = $this->Tramite_model->getTramite($idtramite);
-        $data['tipotramite'] = $this->TipoTramite_model->getTipoTramite($data['tramite']['idtipotramite']);
+        $data['tipotramite'] = $this->TipoTramite_model->getTipoTramiteByIdTipoTramite($data['tramite']['idtipotramite']);
         $data['persona'] = $this->Persona_model->getPersonaId($data['personatramite']['idpersona']);
         $data['observaciones'] = $this->ProcesoTramite_model->getObservacionesId($data['tramite']['idtramite']);
         $data['funcionario'] = $this->Funcionario_model->getAllFuncionarioFullName($idusuario);
@@ -292,7 +305,7 @@ class Asignados extends CI_Controller{
         $idusuario = $this->session->userdata('idusuario');
         $dataPersona = $this->PersonaTramite_model->getPersonaTramite($idtramite);
         $dataTramite = $this->Tramite_model->getTramite($idtramite);
-        $tipoTramite = $this->TipoTramite_model->getTipoTramite($dataTramite['idtipotramite']);
+        $tipoTramite = $this->TipoTramite_model->getTipoTramiteByIdTipoTramite($dataTramite['idtipotramite']);
         $dataObservaciones = $this->ProcesoTramite_model->getObservacionesId($idtramite);
         //$data = $this->ProcesoTramite_model->getIdPersonaByIdTramite($idtramite);
         $codigo = $this->Tramite_model->getCodigoTramite($idtramite);

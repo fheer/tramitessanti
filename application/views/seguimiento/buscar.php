@@ -20,12 +20,12 @@
     </div>
     <div class="row grid-margin">
       <?php
-          if (!empty($mensaje)) {
-          ?>
-            <div class="alert alert-danger">
-             <?php echo $mensaje; ?>
-           </div>
-          <?php } ?>
+      if (!empty($mensaje)) {
+        ?>
+        <div class="alert alert-danger">
+         <?php echo $mensaje; ?>
+       </div>
+     <?php } ?>
       <div class="col-12">
         <?php echo form_open(base_url().'seguimiento/buscar',array("class"=>"forms-sample","enctype"=>"multipart/form-data")); ?>
       <div class="form-group" align="center">
