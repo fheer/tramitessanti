@@ -121,11 +121,11 @@ class TipoTramite_model extends CI_Model
         }
     }
 
-    function validarNombreTipoTramite($nombre)
+    function validarNombreTipoTramite($nombreRequisito)
     {
-        $this->db->select('idtipotramite,nombre');
+        $this->db->select('idtipotramite,nombreRequisito');
         $this->db->FROM('tipotramite');
-        $this->db->WHERE('nombre', $nombre);
+        $this->db->WHERE('nombreRequisito', $nombreRequisito);
         $this->db->WHERE('estado', 1);
         $resultado = $this->db->get();
         if ($resultado->num_rows() > 0) {

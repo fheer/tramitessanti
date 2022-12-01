@@ -193,10 +193,10 @@ class TipoTramite extends CI_Controller{
     function datos()
     {
         $params = array(
-            'nombre' => $this->input->post('nombre'),
+            'nombreRequisito' => $this->input->post('nombre'),
             'descripcion' => $this->input->post('descripcion'),
             'tiempoEstimado' => $this->input->post('tiempoEstimado'),
-            'slug' => $this->generateSlug($this->input->post('nombre')),
+            'key' => $this->generateSlug($this->input->post('nombre')),
             'idnormalegal' => $this->input->post('idnormalegal'),
         );
         return $params;

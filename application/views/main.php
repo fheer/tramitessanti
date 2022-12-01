@@ -25,7 +25,7 @@
                   if (!empty($usuario)) {
                     $permisos = explode("#",$usuario['permisos']);
                     $espacios = count($permisos);
-                    if ($espacios==6) {
+                  if ($espacios==7) {
                   ?>
                   <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
                       <div class="statistics-item">
@@ -69,18 +69,39 @@
                         <h2><?php echo $cantidadTramitesFinalizados; ?></h2>
                         <a href="<?php echo base_url();?>proceso/listar/0" class="badge badge-outline-success badge-pill" target="_blank">Ir...</a>
                       </div>
-                      <!--
-                      <div class="statistics-item">
-                        <p>
-                          <i class="icon-sm fas fa-circle-notch mr-2"></i>
-                          Pending
-                        </p>
-                        <h2>7500</h2>
-                        <label class="badge badge-outline-success badge-pill">16% decrease</label>
-                      </div>
-                      -->
                   </div>
-                  <?php } } ?>
+                  <?php }else{ ?>
+                    <?php echo form_open(base_url().'seguimiento/buscar',array("class"=>"forms-sample","enctype"=>"multipart/form-data")); ?>
+                    <div class="form-group" align="center">
+                      <label for="idactividad" class="col-sm-12 col-form-label">C.I.</label>
+                      <div class="col-sm-3">
+                        <input type="text" class="form-control" name="ci" value="<?php echo $this->input->post('ci'); ?>">
+                        <span class="text-danger"><?php echo form_error('ci');?></span>
+                      </div>
+                      <div class="col-sm-3">
+
+                      </div>
+                      <br>
+                      <div class="col-sm-3">
+                        <button type="submit" class="btn btn-primary mr-2">Buscar</button>
+                      </div>
+                      <br><br>
+                      <?php
+                      if (!empty($persona)) {
+                        ?>
+                        <div class="page-header">
+                          <nav aria-label="breadcrumb">
+                            <div class="pull-right">
+                              <h4><strong><?php echo 'Solicitante: '. $persona['nombreCompleto']; ?></strong></h4>
+                            </div>
+                          </nav>
+                        </div>
+                      <?php } ?> 
+                    </div>
+
+                  <?php } ?>
+
+                  <?php } ?>
                 </div>
               </div>
             </div>

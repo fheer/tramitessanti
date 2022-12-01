@@ -73,6 +73,7 @@ foreach ($permisos as $permisoMd5)
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Seguimiento Trámites</title>
   <!-- plugins:css -->
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <link rel="stylesheet" href="<?php echo base_url();?>assets/vendors/iconfonts/font-awesome/css/all.min.css">
   <link rel="stylesheet" href="<?php echo base_url();?>assets/vendors/iconfonts/flag-icon-css/css/flag-icon.min.css" />
   <link rel="stylesheet" href="<?php echo base_url();?>assets/vendors/css/vendor.bundle.base.css">
@@ -385,6 +386,7 @@ foreach ($permisos as $permisoMd5)
             <div class="collapse" id="e-commerce">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url();?>imprimir/reporte-en-curso/3" target="_blank"> Fases </a></li>
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url();?>imprimir/grafico" target="_blank"> Grafico </a></li>
               </ul>
             </div>
           </li>

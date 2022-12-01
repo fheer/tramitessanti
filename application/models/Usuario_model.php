@@ -69,7 +69,7 @@ class Usuario_model extends CI_Model
     {
         $this->db->select('count(idpersona) as contador');
         $this->db->from('persona');
-        $this->db->where('estado', 1);
+        //$this->db->where('estado', 1);
         
         $resultado = $this->db->get();
         if ($resultado->num_rows() > 0) {

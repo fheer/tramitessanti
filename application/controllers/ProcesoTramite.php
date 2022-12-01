@@ -131,6 +131,48 @@ class ProcesoTramite extends CI_Controller{
     }
 
     /**
+     * Insert inicia la vista header add y footer para procesoTramite.
+     */
+    function graficos()
+    {
+        //*
+        $this->load->view('layout/header');
+        $this->load->view('procesoTramite/grafico');
+        $this->load->view('layout/footer');
+        //*/
+    }
+
+    /**
+     * Insert inicia la vista header add y footer para procesoTramite.
+     */
+    function verGrafico()
+    {
+        $situacion = $this->input->post('situacion');
+        
+        $de = $this->input->post('de');
+        $hasta = $this->input->post('hasta');
+
+        ///*
+        $newDateDe = date("d/m/Y", strtotime($de));
+        $newDateHasta = date("d/m/Y", strtotime($hasta));
+        if ($de>$hasta) {
+            $data['mensaje'] = "La fecha de no puede ser mayor a la fecha hasta";
+            $this->load->view('layout/header');
+            $this->load->view('procesoTramite/grafico', $data);
+            $this->load->view('layout/footer');
+        }
+        //*/
+        $data['grafico'] = $this->ProcesoTramite_model->getAllTramiteFechas($situacion, $de, $hasta);
+        $data['situacion'] = $situacion;
+        
+        //*
+        $this->load->view('layout/header');
+        $this->load->view('procesoTramite/graficos', $data);
+        $this->load->view('layout/footer');
+        //*/
+    }
+
+    /**
      * GetTramiteRequisitos.
      * @return result_array con datos de requisitos de los tipotramites.
      */
