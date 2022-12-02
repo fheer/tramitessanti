@@ -25,7 +25,9 @@
                   if (!empty($usuario)) {
                     $permisos = explode("#",$usuario['permisos']);
                     $espacios = count($permisos);
-                  if ($espacios==7) {
+                  //if ($espacios==7) {
+                    $tipo = $this->session->userdata('tipo');
+                    if ($tipo==2) {
                   ?>
                   <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
                       <div class="statistics-item">
@@ -88,84 +90,7 @@
                     </div>
 
                   <?php } ?>
-                    <div class="table-responsive">
-              <table id="order-listing" class="table">
-                <thead>
-                  <tr>
-                    <th><font color="white">#</font></th>
-                    <th><font color="white">N° de Tramite</font></th>
-                    <th><font color="white">Tipo Trámite</font></th>
-                    <th><font color="white">Fecha Inicio</font></th>
-                    <th><font color="white">Fecha Fin</font></th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
-                  if (!empty($personatramite)) {
-                  ?>
-                  <?php
-                    $ciTInstance = &get_instance();
-                    $ciTInstance->load->model("Tramite_model");
-                    $ciTInstance->load->model("Persona_model");
-                    $ciTInstance->load->model("TipoTramite_model");
-                    $i=1;
-                    //print_r($personatramite);
-                    foreach ($personatramite as $row) {
-                    $tramiteBuscar = $ciTInstance->Tramite_model->getTramite($row['idtramite']);
-                    $tipotramite = $ciTInstance->TipoTramite_model->getTipoTramiteId($tramiteBuscar['idtipotramite']);
-                    //echo $tramiteBuscar['idtipotramite'].'<br>';
-                    $idpersona = $ciTInstance->Persona_model->getIdPersonaTramite($row['idtramite']);
-
-                    //print_r($tramiteBuscar['fechaInicio']);
-                    $originalDate = $tramiteBuscar['fechaInicio'];
-                    $fechaInicio = date("d-m-Y", strtotime($originalDate));
-                    $originalDate1 = $tramiteBuscar['fechaFin'];
-                    $fechaFin = date("d-m-Y", strtotime($originalDate1));
                     
-                  ?>
-                  <tr>
-                      <td align="center" ><font color="white"><?php echo $i; ?></font></td>
-                      <td align="center"><font color="white"><?php echo $tramiteBuscar['codigo']; ?></font></td>
-                      <td align="center"><font color="white"><?php echo $tipotramite['nombreRequisito']; ?></font></td>
-                      <td align="center"><font color="white"><?php echo $fechaInicio; ?></font></td>
-                      <td align="center"><font color="white"><?php echo $fechaFin; ?></td>
-                      <td>
-                        <span class="pull-right">
-                          <div class="dropdown">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            Acciones
-                            <span class="caret"></span>
-                          </button>
-                          <ul class="dropdown-menu pull-right" aria-labelledby="dropdownMenu1">
-                            <li>
-                              <a href="<?php echo base_url().'asignados/imprimir/'.$tramiteBuscar['idtramite']; ?>"
-                              title="Imprimir Resumen" target="_blank">
-                              &nbsp <i style="color:#555;" class="fa fa-edit"></i> Imprimir Resumen
-                              </a>                       
-                            </li>
-                            <li>
-                              <a href="<?php echo base_url().'seguimiento/hoja/'.$idpersona.'/'.$tramiteBuscar['idtramite']; ?>"
-                              title="Imprimir Resumen" target="_blank">
-                              &nbsp <i style="color:#555;" class="fa fa-edit"></i> Seguimiento
-                              </a>                       
-                            </li>
-                            <li>
-                              <a href="<?php echo base_url().'seguimiento/bitacora/'.$tramiteBuscar['idtramite']; ?>"
-                              title="Imprimir Resumen" target="_blank">
-                              &nbsp <i style="color:#555;" class="fa fa-edit"></i> Bitacora
-                              </a>
-                            </li>
-                        </ul>
-                      </div>
-                    </span>
-                  </td> 
-                  </tr>
-                  <?php $i++; } ?>
-                  <?php } ?>
-                </tbody>
-            </table>
                   <?php } ?>
                 </div>
               </div>
