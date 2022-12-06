@@ -139,9 +139,11 @@ $route['imprimir/procesotramite'] = "ProcesoTramite/reporteTramite";
 $route['imprimir/usuarios'] = "Usuario/reporteUsuario";
 $route['imprimir/reporte-en-curso/(:any)'] = "ProcesoTramite/enCurso/$1";
 $route['imprimir/grafico'] = "ProcesoTramite/graficos";
+$route['imprimir/tipo'] = "ProcesoTramite/tipo";
 $route['imprimir/imprimir-en-curso'] = "ProcesoTramite/reporteTramite";
 $route['imprimir/imprimir-aprobados'] = "ProcesoTramite/reporteTramitesAprobados";
 $route['ver/grafico'] = "ProcesoTramite/verGrafico";
+$route['ver/tipo'] = "ProcesoTramite/verGraficoTipoTramite";
 $route['imprimir/imprimir-fases'] = "ProcesoTramite/reporteFases";
 
 

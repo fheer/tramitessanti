@@ -386,7 +386,8 @@ foreach ($permisos as $permisoMd5)
             <div class="collapse" id="e-commerce">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url();?>imprimir/reporte-en-curso/3" target="_blank"> Fases </a></li>
-                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url();?>imprimir/grafico" target="_blank"> Grafico </a></li>
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url();?>imprimir/grafico" target="_blank"> Estado de trámite </a></li>
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url();?>imprimir/tipo" target="_blank"> Tipo de trámite </a></li>
               </ul>
             </div>
           </li>

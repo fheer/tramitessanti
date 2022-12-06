@@ -9,16 +9,16 @@
   function drawChart() {
 
     var data = google.visualization.arrayToDataTable([
-      ['Task', 'Trámites'],
+      ['Task', 'Tipo de Trámites'],
       <?php 
       foreach ($grafico as $row) {
-        echo "['" .$row['estado'].' -- Cantidad: '.$row['cantidad']."', " .$row['cantidad']."],";
+        echo "['" .$row['tipoTramite'].' -- Cantidad: '.$row['cantidad']."', " .$row['cantidad']."],";
       }
       ?>
       ]);
 
     var options = {
-      title: 'Estado de Trámites'
+      title: 'Reporte por Tipo de Trámites'
     };
 
     var chart = new google.visualization.PieChart(document.getElementById('piechart'));
@@ -53,7 +53,7 @@
                 <div class="card-title">
                   <div align="center">
                     <br>
-                    <h4>Reporte Trámites Gráfico</h4>
+                    <h4>Reporte por Tipo Trámites Gráfico</h4>
                     <br>
                     <h5>De: <?php echo $de; ?> Hasta: <?php echo $hasta; ?></h5>
                   </div>
@@ -61,10 +61,10 @@
                 <div class="card-body">
                   <div id="piechart" style="width: 100%; height: 500px;"></div>
                 </div>
-                <form action="<?php echo base_url();?>ProcesoTramite/reporteGraficoPdf" method="post"> 
+                <form action="<?php echo base_url();?>ProcesoTramite/reporteGraficoTipoPdf" method="post"> 
                   <input type="hidden" name="variable" id="variable" >
-                  <input type="hidden" name="de" >
-                  <input type="hidden" name="hasta" >
+                  <input type="hidden" name="de"value="<?php echo $de; ?>" >
+                  <input type="hidden" name="hasta" value="<?php echo $hasta; ?>">
                 <div align="center">
 
                   <input type="submit" value="Ver" class="btn btn-success mt-5 mr-5 float-right"/>

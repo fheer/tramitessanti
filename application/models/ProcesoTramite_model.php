@@ -219,16 +219,43 @@ class ProcesoTramite_model extends CI_Model
      * GetAllProcesoTramite.
      * @return result_array con datos de varios tramites.
      */
-    function getAllTramiteFechas($opcion, $de, $hasta)
+    function getAllTramiteFechas($de, $hasta)
     {
-        if ($opcion==1) {
-            $this->db->where('estado', 1);
-        }else{
-            $this->db->where('estado', 0);
-        }
+
+        $this->db->select("COUNT(estado) AS cantidad , IF(estado=0, 'Aprobados', 'En curso') AS estado");
         $this->db->where('fechaInicio>=', $de);
         $this->db->where('fechaInicio<=', $hasta);
-        $this->db->order_by('estado', 'desc');
+        $this->db->group_by('estado');
+        return $this->db->get('tramite')->result_array();        
+    }
+
+    /**
+     * GetAllProcesoTramite.
+     * @return result_array con datos de varios tramites.
+     */
+    function getTipoTramiteFechas($de, $hasta)
+    {
+
+        $this->db->select("COUNT(t.idtipotramite) AS cantidad , tt.nombreRequisito AS tipoTramite");
+        $this->db->from('tramite t');
+        $this->db->join('tipotramite tt', 'ON tt.idtipotramite=t.idtipotramite');
+        $this->db->where('fechaInicio>=', $de);
+        $this->db->where('fechaInicio<=', $hasta);
+        $this->db->group_by('t.idtipotramite');
+        return $this->db->get()->result_array();        
+    }
+
+    /**
+     * GetAllProcesoTramite.
+     * @return result_array con datos de varios tramites.
+     */
+    function getAllTramiteFechasActivo($opcion, $de, $hasta)
+    {
+        $this->db->select('COUNT(idtramite) AS terminado, fechaInicio');
+        $this->db->where('fechaInicio>=', $de);
+        $this->db->where('fechaInicio<=', $hasta);
+        $this->db->where('estado', 1);
+        $this->db->order_by('fechaInicio', 'desc');
         return $this->db->get('tramite')->result_array();
     }
 

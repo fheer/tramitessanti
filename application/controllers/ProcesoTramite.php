@@ -145,10 +145,21 @@ class ProcesoTramite extends CI_Controller{
     /**
      * Insert inicia la vista header add y footer para procesoTramite.
      */
+    function tipo()
+    {
+        //*
+        $this->load->view('layout/header');
+        $this->load->view('procesoTramite/tipo');
+        $this->load->view('layout/footer');
+        //*/
+    }
+
+    /**
+     * Insert inicia la vista header add y footer para procesoTramite.
+     */
     function verGrafico()
     {
-        $situacion = $this->input->post('situacion');
-        
+    
         $de = $this->input->post('de');
         $hasta = $this->input->post('hasta');
 
@@ -162,12 +173,43 @@ class ProcesoTramite extends CI_Controller{
             $this->load->view('layout/footer');
         }
         //*/
-        $data['grafico'] = $this->ProcesoTramite_model->getAllTramiteFechas($situacion, $de, $hasta);
-        $data['situacion'] = $situacion;
-        
+        $data['grafico'] = $this->ProcesoTramite_model->getAllTramiteFechas($de, $hasta);
+        $data['de'] = $newDateDe;
+        $data['hasta'] = $newDateHasta;
+
         //*
         $this->load->view('layout/header');
         $this->load->view('procesoTramite/graficos', $data);
+        $this->load->view('layout/footer');
+        //*/
+    }
+
+    /**
+     * Insert inicia la vista header add y footer para procesoTramite.
+     */
+    function verGraficoTipoTramite()
+    {
+    
+        $de = $this->input->post('de');
+        $hasta = $this->input->post('hasta');
+
+        ///*
+        $newDateDe = date("d/m/Y", strtotime($de));
+        $newDateHasta = date("d/m/Y", strtotime($hasta));
+        if ($de>$hasta) {
+            $data['mensaje'] = "La fecha de no puede ser mayor a la fecha hasta";
+            $this->load->view('layout/header');
+            $this->load->view('procesoTramite/tipo', $data);
+            $this->load->view('layout/footer');
+        }
+        //*/
+        $data['grafico'] = $this->ProcesoTramite_model->getTipoTramiteFechas($de, $hasta);
+        $data['de'] = $newDateDe;
+        $data['hasta'] = $newDateHasta;
+
+        //*
+        $this->load->view('layout/header');
+        $this->load->view('procesoTramite/tipografico', $data);
         $this->load->view('layout/footer');
         //*/
     }
@@ -722,7 +764,13 @@ class ProcesoTramite extends CI_Controller{
             $fechaInicio = date("d-m-Y", strtotime($originalDate));
 
             $originalDate = $row['fechaFin'];
-            $fechaFin = date("d-m-Y", strtotime($originalDate));
+            //echo $fechaFin;
+            if (!empty($originalDate)) {
+                $fechaFin = date("d-m-Y", strtotime($originalDate));
+            }else{
+                $fechaFin = '';
+            }
+            
             //*/
             $pdf->Row(array($indice,utf8_decode($row['codigo']),utf8_decode($solicitante['nombreCompleto']),utf8_decode($tipotramite['nombreRequisito']),utf8_decode('Fase '.$row['fase'])));
             //$pdf->Ln(5);
@@ -730,6 +778,92 @@ class ProcesoTramite extends CI_Controller{
         }
             $pdf->Output("aprobados.pdf","I");
         }
+    }
+
+    public function reporteGraficoPdf()
+    {
+        $variable = $this->input->post('variable');
+        $de = $this->input->post('de');
+        $hasta = $this->input->post('hasta');
+        
+        $newDateDe = date("d/m/Y", strtotime($de));
+
+        $newDateHasta = date("d/m/Y", strtotime($hasta));
+       
+        $pdf = new PDF_MC_Table();
+        $pdf->AddPage();
+        $pdf->AliasNbPages();
+        $pdf->SetLeftMargin(15);
+        $pdf->SetRightMargin(15);
+        $pdf->SetFillColor(300,300,300);
+        $pdf->SetXY(31, 11);
+        $logo = base_url()."fotos/logo1.jpg";
+        $pdf->Image($logo, 15, 5, 25, 23);
+
+        $hoy = date("d/m/Y");
+
+        $pdf->SetXY(15, 11);
+        $pdf->SetFont('Arial','B',10);
+        $pdf->Cell(185,10,utf8_decode('GOBIERNO AUTONOMO MUNCIPAL'),0,0,'R');
+        $pdf->SetXY(15, 15);
+        $pdf->Cell(185,10,utf8_decode('Fecha Impresion '. $hoy),0,0,'R');
+        $pdf->SetXY(15, 19);
+        $pdf->Cell(185,10,utf8_decode('Usuario: '.$this->session->userdata('usuario')),0,0,'R');
+        $pdf->Ln(15);
+        $pdf->SetFont('Arial','B',16);
+        //$pdf->Cell(30);
+        $pdf->Cell(185,10,utf8_decode('ESTADO TRÁMITES DE ' .$newDateDe. ' A '.$newDateHasta),0,0,'C');
+        $pdf->Ln(15);
+        $img = explode(',',$variable,2)[1];
+        $pic = 'data://text/plain;base64,'. $img;
+        
+        $pdf->Image($pic, 20,50,200,150,'png');
+
+        $pdf->Output("producto.pdf","I");
+      //}
+    }
+
+    public function reporteGraficoTipoPdf()
+    {
+        $variable = $this->input->post('variable');
+        $de = $this->input->post('de');
+        $hasta = $this->input->post('hasta');
+        
+        $newDateDe = date("d/m/Y", strtotime($de));
+
+        $newDateHasta = date("d/m/Y", strtotime($hasta));
+       
+        $pdf = new PDF_MC_Table();
+        $pdf->AddPage();
+        $pdf->AliasNbPages();
+        $pdf->SetLeftMargin(15);
+        $pdf->SetRightMargin(15);
+        $pdf->SetFillColor(300,300,300);
+        $pdf->SetXY(31, 11);
+        $logo = base_url()."fotos/logo1.jpg";
+        $pdf->Image($logo, 15, 5, 25, 23);
+
+        $hoy = date("d/m/Y");
+
+        $pdf->SetXY(15, 11);
+        $pdf->SetFont('Arial','B',10);
+        $pdf->Cell(185,10,utf8_decode('GOBIERNO AUTONOMO MUNCIPAL'),0,0,'R');
+        $pdf->SetXY(15, 15);
+        $pdf->Cell(185,10,utf8_decode('Fecha Impresion '. $hoy),0,0,'R');
+        $pdf->SetXY(15, 19);
+        $pdf->Cell(185,10,utf8_decode('Usuario: '.$this->session->userdata('usuario')),0,0,'R');
+        $pdf->Ln(15);
+        $pdf->SetFont('Arial','B',16);
+        //$pdf->Cell(30);
+        $pdf->Cell(185,10,utf8_decode('REPORTE POR TIPO TRÁMITE DE ' .$newDateDe. ' A '.$newDateHasta),0,0,'C');
+        $pdf->Ln(15);
+        $img = explode(',',$variable,2)[1];
+        $pic = 'data://text/plain;base64,'. $img;
+        
+        $pdf->Image($pic, 20,50,200,150,'png');
+
+        $pdf->Output("producto.pdf","I");
+      //}
     }
 
     /**

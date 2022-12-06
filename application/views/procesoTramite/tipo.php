@@ -22,7 +22,7 @@
                 <br>
                 
                 <div align="center">
-                  <h4>Reporte Trámites Gráfico</h4>
+                  <h4>Reporte por Tipo Trámite Gráfico</h4>
                 </div>              
               <div class="card-body">
               <?php
@@ -33,7 +33,7 @@
                </div>
               <?php }?>
              <br>
-              <form class="forms-sample" action="<?php echo base_url();?>ver/grafico" method="post" enctype="multipart/form-data">
+              <form class="forms-sample" action="<?php echo base_url();?>ver/tipo" method="post" enctype="multipart/form-data">
               <div align="center"><label class="col-form-label">Seleccione rango de fechas</label></div>
               <div class="form-group">
                 <input type="hidden" class="form-control" id="exampleInputName1" name="idempleado" value="<?php echo $this->session->userdata('idempleado');?>">
