@@ -27,7 +27,7 @@ class ProcesoTramite extends CI_Controller{
      */
     function index($opcion)
     {
-        //echo $opcion;
+        echo $opcion;
         ///*
         $data['tramite'] = $this->ProcesoTramite_model->getAllProcesoTramite($opcion);
         $data['opcion'] = $opcion;

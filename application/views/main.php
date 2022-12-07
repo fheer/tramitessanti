@@ -55,19 +55,19 @@
                       <div class="statistics-item">
                         <p>
                           <i class="icon-sm fas fa-check-circle mr-2"></i>
-                          Trámites Activos
+                          Trámites en Curso
                         </p>
                         <h2><?php echo $cantidadTramites; ?></h2>
-                        <a href="<?php echo base_url();?>proceso/listar/1" class="badge badge-outline-success badge-pill" target="_blank">Ir...</a>
+                        <a href="<?php echo base_url();?>proceso/lista/1" class="badge badge-outline-success badge-pill" target="_blank">Ir...</a>
                       </div>
                       
                       <div class="statistics-item">
                         <p>
                           <i class="icon-sm fas fa-chart-line mr-2"></i>
-                          Tramites Finalizados
+                          Tramites Aprobados
                         </p>
                         <h2><?php echo $cantidadTramitesFinalizados; ?></h2>
-                        <a href="<?php echo base_url();?>proceso/listar/0" class="badge badge-outline-success badge-pill" target="_blank">Ir...</a>
+                        <a href="<?php echo base_url();?>proceso/lista/2" class="badge badge-outline-success badge-pill" target="_blank">Ir...</a>
                       </div>
                   </div>
                   <a href="">
